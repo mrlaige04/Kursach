@@ -1,0 +1,24 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = Kursach
+build_property.RootNamespace = Kursach
+build_property.ProjectDir = E:\КПИ УЧЕБА\1 курс 2 семестр\Proga\Kursova\API\Kursach\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = E:\КПИ УЧЕБА\1 курс 2 семестр\Proga\Kursova\API\Kursach
+build_property._RazorSourceGeneratorDebug = 
+
+[E:/КПИ УЧЕБА/1 курс 2 семестр/Proga/Kursova/API/Kursach/Views/MealsAll/Meal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVhbHNBbGxcTWVhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/КПИ УЧЕБА/1 курс 2 семестр/Proga/Kursova/API/Kursach/Views/User/User.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxVc2VyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 

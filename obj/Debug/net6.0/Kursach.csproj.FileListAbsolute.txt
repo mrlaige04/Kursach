@@ -27,3 +27,4 @@ E:\КПИ УЧЕБА\1 курс 2 семестр\Proga\Kursova\API\Kursach\obj\D
 E:\КПИ УЧЕБА\1 курс 2 семестр\Proga\Kursova\API\Kursach\obj\Debug\net6.0\Kursach.pdb
 E:\КПИ УЧЕБА\1 курс 2 семестр\Proga\Kursova\API\Kursach\obj\Debug\net6.0\Kursach.genruntimeconfig.cache
 E:\КПИ УЧЕБА\1 курс 2 семестр\Proga\Kursova\API\Kursach\obj\Debug\net6.0\ref\Kursach.dll
+E:\КПИ УЧЕБА\1 курс 2 семестр\Proga\Kursova\API\Kursach\bin\Debug\net6.0\Kursach.staticwebassets.runtime.json

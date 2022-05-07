@@ -2,10 +2,22 @@
 using Microsoft.AspNetCore.Mvc;
 namespace Kursach.Controllers
 {
+
+    //TODO:MAKE THIS CONTROLLER
+
+    /// <summary>
+    /// My Meals
+    /// </summary>
     [ApiController]
-    [Route("/[controller]/getall")]
+    [Route("/[controller]/GetAll")]
     public class MyMealsController : Controller
     {
+
+
+        /// <summary>
+        /// Get My Meals
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public string GetAll()
         {
@@ -13,16 +25,29 @@ namespace Kursach.Controllers
         }
 
 
+
+
+        /// <summary>
+        /// Put meal to own recipe book
+        /// </summary>
+        /// <param name="meal"></param>
+        /// <returns></returns>
         [HttpPost]
-        [Route("/[controller]/sendmeal")]
+        [Route("/[controller]/SendMeal")]
         public string SendMeal(Meal meal)
         {
             return "sendmeal";
         }
 
 
+
+        /// <summary>
+        /// Delete recipe from book
+        /// </summary>
+        /// <param name="meal"></param>
+        /// <returns></returns>
         [HttpDelete]
-        [Route("/[controller]/deletemeal")]
+        [Route("/[controller]/DeleteMeal")]
         public string DeleteMeal(Meal meal)
         {
             return "delete";
