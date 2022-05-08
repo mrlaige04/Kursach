@@ -1,29 +1,43 @@
-﻿using System.Security.Cryptography;
+﻿using Kursach.Models.Meals;
+using System.Security.Cryptography;
 using System.Text;
-
+using System.Text.Json;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 namespace Kursach.Models.User
 {
     public class User
     {
-        public string Id { get; set; }
-        public string Login { get; set; }
+        [Key]
+        public string hash { get; set; }
+        
+        public string login { get; set; }
 
-        private string Password { get; set; }
+        public string password { get; set; }
 
+        public string recipes { get; set; }
+
+        private List<Meal> listrecipes { get; set; }
         public User(string login, string password)
         {
-            Login = login;
-            Password = password;
-            Id = Hasher();
+            this.login = login;
+            this.password = password;
+            hash = Hasher();
         }
+        public User()
+        {
 
+        }
         private string Hasher()
         {
             using (MD5 md5 = MD5.Create())
             {
                 string hash = "";
-                byte[] logbytes = Encoding.UTF8.GetBytes(Login);
-                byte[] passbytes = Encoding.UTF8.GetBytes(Password);
+                byte[] logbytes = Encoding.UTF8.GetBytes(login);
+                byte[] passbytes = Encoding.UTF8.GetBytes(password);
 
                 byte[] computelogin = md5.ComputeHash(logbytes);
                 byte[] computepassword = md5.ComputeHash(passbytes);
@@ -40,6 +54,18 @@ namespace Kursach.Models.User
 
                 return hash;
             }
+        }
+
+        public void AddRecipe(Meal meal)
+        {
+            listrecipes.Add(meal);
+            recipes = JsonSerializer.Serialize<List<Meal>>(listrecipes);
+        }
+
+
+        public override string ToString()
+        {
+            return "Login: " + login + " Password: " + password + " Recipes: " + recipes;
         }
     }
 }
