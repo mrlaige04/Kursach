@@ -2,17 +2,36 @@
 <!doctype html>
 <html>
     <head>
-
+        <link rel="stylesheet" href="~/style/layout.css">
     </head>
     <body>
-        <a href="~/" id="backtomenu"><i class="fa fa-home"></i></a>
+        <div class="navbar">
+            <ul>
+                <li><a href="~/">Home</a></li>
+                <li><a href="~/MealsAll/Index">Search</a></li>
+                <li><a href="~/MyMeals/GetAll">Account</a></li>
+                <li><a href="~/APIDOCS">API Docs</a></li>
+            </ul>
+        </div>
         @RenderBody()
-        <style>
-            .backtomenu {
-                position:absolute;
-                max-width:30px;
-                max-height:30px;
-            }
-        </style>
+        <footer>
+            <div class="leftfooter">
+                <ul>
+                    <li><a href="~/Categories">Categories</a></li>
+                    <li><a href="~/MealsAll/Index">Search</a></li>
+                    <li><a href="~/MyMeals/GetAll">Account</a></li>
+                    <li><a href="~/APIDOCS">API Docs</a></li>
+                </ul>
+            </div>
+            <div class="rightfooter">
+                <ul>
+                    <li><a target="_blank" href="https://twitter.com/mrlaige"><img class="nets" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Twitter-logo.svg/2491px-Twitter-logo.svg.png" alt=""></a></li>
+                    <li><a target="_blank" href="https://www.instagram.com/mrlaige/"><img class="nets" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/2048px-Instagram_icon.png" alt=""></a></li>
+                    <li><a target="_blank" href="https://www.linkedin.com/in/illia-rudiakov-a29494226/"><img class="nets" src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt=""></a></li>
+                    <li><a target="_blank" href="https://www.facebook.com/profile.php?id=100010876713444"><img class="nets" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Facebook_logo_%28square%29.png/800px-Facebook_logo_%28square%29.png" alt=""></a></li>
+                    <li><a target="_blank" href="https://github.com/mrlaige04"><img class="nets" src="https://icons-for-free.com/download-icon-github-1320568242989935765_512.png" alt=""></a></li>
+                </ul>
+            </div>
+        </footer>
     </body>
 </html>

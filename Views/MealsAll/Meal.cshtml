@@ -1,34 +1,106 @@
-﻿@using Kursach.Models.Meals;
+﻿
+@using Kursach.Models.Meals;
 @model ListOfMeals
 @{
     Layout = "~/Views/_Layout.cshtml";
 }
 
+
 <!doctype html>
 <html>
-    <head>
-        <link type="text/css" rel="stylesheet" src="style/meal.css" />
+    <head>   
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <title>Searching</title>
+        <link rel="stylesheet" href="~/style/meal.css">
+        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
 
     <body>
-        <div class="leftside">
-            <a href="~/Categories">Categories</a>
-            
-        </div>
-        <div class="rightside">
-            @foreach (var item in Model.meals)
-            {
-                <div class="meal">
-                    <img src="@item.strImageSource"></img>
-                    <p>@item.strMeal</p>
-                    <p>Area: @item.strArea</p>
-                    <p>Youtube tutorial: @item.strYoutube</p>
+        <div class="content">
+            <div class="leftsidesearch">
+                <div class="containers">
+
+                    <div class="searchbyid">
+                        <h3>ById</h3>
+                        <form method="get" action="~/MealsAll/MealById?id={id}">
+                            <input type="text" name="id" id="id" required>
+                            <button type="submit">Search</button>                           
+                        </form>
+                    </div>
+
+                    <div class="searchbyname">
+                        <h3>ByName</h3>
+                        <form method="get" action="~/MealsAll/MealByName?name={name}">
+                            <input type="text" name="name" id="name" required>
+                            <button type="submit" >Search</button>
+                        </form>
+                    </div>
+
+                    <div class="searchbyregion">
+                        <h3>ByRegion</h3>
+                        <form method="get" action="~/MealsAll/AreaMeal?area={area}">
+                            <input type="text" name="area" id="region" required>
+                            <button type="submit">Search</button>
+                        </form>
+                    </div>
+
+                    <div class="searchbycategory">
+                        <h3>ByCategory</h3>
+                        <form method="get" action="~/MealsAll/MealByCategory?category={category}">
+                            <input type="text" name="category" id="category" required>
+                            <button type="submit">Search</button>
+                        </form>
+                    </div>
+
+                    <div class="searchbyingredient">
+                        <h3>ByIngredient</h3>
+                        <form method="get" action="~/MealsAll/MealByMainIngredient?ingredient={ingredient}">
+                            <input type="text" name="ingredient" id="ingredient" required>
+                            <button type="submit">Search</button>
+                        </form>
+                    </div>
+
                 </div>
-            }
+            </div>
+            <div class="verticalline"></div>
+            <div class="rightsidesearch">
+                @if (Model.meals != null)
+                {
+                    @foreach (var item in Model?.meals)
+                    {
+                        <div class="meal">
+                            <div class="maininfo">
+                                <div class="mealimg">
+                                    <img width="120px" height="120px" src="@item.strMealThumb">
+                                </div>
+                                <div class="descrip">
+                                    <h2><b>@item.strMeal</b></h2>
+                                    <p>ID: @item.idMeal</p>                                
+                                </div>
+                                <div class="showmore" onlick="showmore()">
+                                    <i class="fa fa-angle-double-down" style="font-size:24px"></i>
+                                </div>
+                            </div>
+                            <div class="additioninfo">
+                                <p>Area: @item.strArea</p>
+                                <p>Youtube tutorial: @item.strYoutube</p>
+                            </div>
+                        </div>
+                    }
+                }
         </div>
+        </div>
+        <script>
+            
+            function showmore() {
+                var element = document.getElementsByClassName("additioninfo");
+                element.style.display = "block";
+            }
+        </script>
     </body>
 </html>
- 
+
+

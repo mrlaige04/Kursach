@@ -52,7 +52,7 @@ namespace Kursach.Controllers
         /// <returns></returns>
         [HttpGet("ingredient")]
         [Route("/[controller]/MealByMainIngredient")]
-        public object MealByMainIngredient(string ingredient)
+        public IActionResult MealByMainIngredient(string ingredient)
         {
             message = new HttpRequestMessage()
             {
@@ -63,7 +63,8 @@ namespace Kursach.Controllers
             using (response = client.Send(message))
             {
                 var body = response.Content.ReadAsStringAsync().Result;
-                return body;
+                ListOfMeals meals = JsonSerializer.Deserialize<ListOfMeals>(body);
+                return View("Meal",meals);
             }
         }
 
@@ -78,7 +79,7 @@ namespace Kursach.Controllers
         /// <returns></returns>
         [HttpGet("category")]
         [Route("/[controller]/MealByCategory")] 
-        public object MealByCategory(string category)
+        public IActionResult MealByCategory(string category)
         {
             message = new HttpRequestMessage()
             {
@@ -89,7 +90,8 @@ namespace Kursach.Controllers
             using(response = client.Send(message))
             {
                 var body = response.Content.ReadAsStringAsync().Result;
-                return body;
+                ListOfMeals meals = JsonSerializer.Deserialize<ListOfMeals>(body);
+                return View("Meal",meals);
             }
         }
 
@@ -103,7 +105,7 @@ namespace Kursach.Controllers
         /// <returns></returns>
         [HttpGet("name")]
         [Route("/[controller]/MealByName")]
-        public object MealByName(string name)
+        public IActionResult MealByName(string name)
         {
             message = new HttpRequestMessage()
             {
@@ -114,7 +116,8 @@ namespace Kursach.Controllers
             using(response = client.Send(message))
             {
                 var body = response.Content.ReadAsStringAsync().Result;
-                return body;
+                ListOfMeals meals = JsonSerializer.Deserialize<ListOfMeals>(body);
+                return View("Meal",meals);
             }
         }
         
@@ -129,7 +132,7 @@ namespace Kursach.Controllers
         /// <returns></returns>
         [HttpGet("id")]
         [Route("/[controller]/MealById")]
-        public object MealById(long id)
+        public IActionResult MealById(long id)
         {
             message = new HttpRequestMessage()
             {
@@ -139,7 +142,8 @@ namespace Kursach.Controllers
             using(var response = client.Send(message))
             {
                 var body = response.Content.ReadAsStringAsync().Result;
-                return body;
+                ListOfMeals meals = JsonSerializer.Deserialize<ListOfMeals>(body);
+                return View("Meal",meals);
             }
         }
 
@@ -153,7 +157,7 @@ namespace Kursach.Controllers
         /// <returns></returns>
         [HttpGet("area")]
         [Route("/[controller]/AreaMeal")]
-        public object AreaMeal(string area)
+        public IActionResult AreaMeal(string area)
         {
             message = new HttpRequestMessage()
             {
@@ -163,13 +167,14 @@ namespace Kursach.Controllers
 
             using(response = client.Send(message))
             {
-                var content = response.Content;
-                var task = content.ReadAsStringAsync();
-                body = task.Result;
+                var body = response.Content.ReadAsStringAsync().Result;
+                ListOfMeals meals = JsonSerializer.Deserialize<ListOfMeals>(body);
+                return View("Meal", meals);
+
             }
             
 
-            return body;
+            
         }
     }
 }
