@@ -11,17 +11,61 @@ namespace Kursach.Controllers
 
 
         [HttpPost]
-        public string Index(string login, string password)
+        public IActionResult Index()
         {
-            User us1 = new User(login, password);
+            var log = Request.Form["login"].ToString();
+            var pas = Request.Form["password"].ToString();
+            User us1 = new User(log, pas);
+
+            try
+            {
+                
+                if(db.Users.Where(user=>user.login == log).Count()>0)
+                {
+                    throw new Exception();
+                }
+                db.Users.Add(us1);
+                db.SaveChanges();
+                ViewData["successfullsignup"] = true;
+            } catch
+            {
+                
+                ViewData["successfullsignup"] = false;
+            }
+            return View("~/Views/Account/Account.cshtml");
             
-            db.Users.Add(us1);
-            db.SaveChanges();
-            return us1.hash;
         }
 
+
+
+        [HttpPost]
+        [Route("~/User/Logining")]
+        public void Logining()
+        {
+            var log = Request.Form["login"].ToString();
+            var pas = Request.Form["password"].ToString();
+
+            try
+            {
+                if(db.Users.Where(user=>(user.login==log))?.Where(user=>user.password==pas).Count()>0)
+                {
+                    ViewData["LOGGEDIN"] = true;
+                } else {
+                    ViewData["LOGGEDIN"] = false;
+                }
+            } catch
+            {
+                ViewData["LOGGEDIN"] = false;
+            }
+            Response.Redirect("~/MyMeals/GetAll");
+        }
+        
+
+
+
         [HttpGet]
-        public string Index()
+        [Route("[controller]/UsersAll")]
+        public string UsersAll()
         {
             string ret = "";
             var users = db.Users.ToList();
@@ -32,6 +76,8 @@ namespace Kursach.Controllers
             }
             return ret;
         }
+
+
 
         [HttpGet("login")]
         public string Index(string login)

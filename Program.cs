@@ -1,5 +1,4 @@
 using Kursach;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +18,10 @@ app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 
+
+ApplicationContext db = new ApplicationContext();
+db.Users.Clear();
+db.SaveChanges();
 
 app.MapControllers();
 

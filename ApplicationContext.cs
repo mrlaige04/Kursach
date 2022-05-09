@@ -6,12 +6,20 @@ namespace Kursach
     {
         public DbSet<User> Users { get; set; }
 
-        
+
         public ApplicationContext() : base("DefaultConnection")
         {
 
         }
 
         
+    }
+
+    public static class DBExtention
+    {
+        public static void Clear(this DbSet<User> dbSet)
+        {
+            dbSet.RemoveRange(dbSet);
+        }
     }
 }

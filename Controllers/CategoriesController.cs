@@ -14,12 +14,12 @@ namespace Kursach.Controllers
                 Method = HttpMethod.Get,
                 RequestUri = new Uri("https://www.themealdb.com/api/json/v1/1/categories.php")
             };
-            using(var response = client.Send(request))
+            using (var response = client.Send(request))
             {
                 var body = response.Content.ReadAsStringAsync().Result;
                 return body;
             }
-            
+
         }
     }
 }

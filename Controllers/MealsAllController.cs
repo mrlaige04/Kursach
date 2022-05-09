@@ -20,7 +20,7 @@ namespace Kursach.Controllers
 
 
 
-        
+
         /// <summary>
         /// Random Meal
         /// </summary>
@@ -38,7 +38,7 @@ namespace Kursach.Controllers
             {
                 var body = response.Content.ReadAsStringAsync().Result;
                 ListOfMeals meals = JsonSerializer.Deserialize<ListOfMeals>(body);
-                return View("Meal",meals);
+                return View("Meal", meals);
             }
         }
 
@@ -64,7 +64,7 @@ namespace Kursach.Controllers
             {
                 var body = response.Content.ReadAsStringAsync().Result;
                 ListOfMeals meals = JsonSerializer.Deserialize<ListOfMeals>(body);
-                return View("Meal",meals);
+                return View("Meal", meals);
             }
         }
 
@@ -78,7 +78,7 @@ namespace Kursach.Controllers
         /// <param name="category"></param>
         /// <returns></returns>
         [HttpGet("category")]
-        [Route("/[controller]/MealByCategory")] 
+        [Route("/[controller]/MealByCategory")]
         public IActionResult MealByCategory(string category)
         {
             message = new HttpRequestMessage()
@@ -87,11 +87,11 @@ namespace Kursach.Controllers
                 RequestUri = new Uri($"https://www.themealdb.com/api/json/v1/1/filter.php?c={category}")
             };
 
-            using(response = client.Send(message))
+            using (response = client.Send(message))
             {
                 var body = response.Content.ReadAsStringAsync().Result;
                 ListOfMeals meals = JsonSerializer.Deserialize<ListOfMeals>(body);
-                return View("Meal",meals);
+                return View("Meal", meals);
             }
         }
 
@@ -113,14 +113,14 @@ namespace Kursach.Controllers
                 RequestUri = new Uri($"https://www.themealdb.com/api/json/v1/1/search.php?s={name}")
             };
 
-            using(response = client.Send(message))
+            using (response = client.Send(message))
             {
                 var body = response.Content.ReadAsStringAsync().Result;
                 ListOfMeals meals = JsonSerializer.Deserialize<ListOfMeals>(body);
-                return View("Meal",meals);
+                return View("Meal", meals);
             }
         }
-        
+
 
 
 
@@ -139,11 +139,11 @@ namespace Kursach.Controllers
                 Method = HttpMethod.Get,
                 RequestUri = new Uri($"https://www.themealdb.com/api/json/v1/1/lookup.php?i={id}")
             };
-            using(var response = client.Send(message))
+            using (var response = client.Send(message))
             {
                 var body = response.Content.ReadAsStringAsync().Result;
                 ListOfMeals meals = JsonSerializer.Deserialize<ListOfMeals>(body);
-                return View("Meal",meals);
+                return View("Meal", meals);
             }
         }
 
@@ -165,16 +165,16 @@ namespace Kursach.Controllers
                 RequestUri = new Uri($"https://www.themealdb.com/api/json/v1/1/filter.php?a={area}")
             };
 
-            using(response = client.Send(message))
+            using (response = client.Send(message))
             {
                 var body = response.Content.ReadAsStringAsync().Result;
                 ListOfMeals meals = JsonSerializer.Deserialize<ListOfMeals>(body);
                 return View("Meal", meals);
 
             }
-            
 
-            
+
+
         }
     }
 }

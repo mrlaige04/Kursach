@@ -25,7 +25,7 @@ namespace Kursach.Controllers
                 var body = response.Content.ReadAsStringAsync().Result;
                 return body;
             }
-            
+
         }
     }
 }

@@ -1,0 +1,53 @@
+﻿@{ Layout = "~/Views/_Layout.cshtml"; }
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="~/style/account.css">
+    <script type="text/javascript" src="~/js/signer.js"></script>
+    
+</head>
+
+<body>
+
+    <div class="signer">
+        <div class="wrapper fadeInDown">
+            <div class="formContent signupper">
+                <!-- Tabs Titles -->
+                <h2 onclick="activator('signup')" class="active signin"> Sign Up </h2>
+                <h2 onclick="activator('signin')" class="inactive underlineHover signup">Sign In </h2>
+                <!-- SignUp Form -->
+                <form method="post" action="~/User/Index">
+                    <input type="text" required id="login" class="fadeIn second" name="login" placeholder="Login">
+                    <input type="password" required id="password" class="fadeIn third" name="password" placeholder="Password">
+                    <input id="submitter" type="submit" class="fadeIn fourth " value="Sign Up"> @if(ViewData["successfullsignup"] != null) { if((bool)ViewData["successfullsignup"]==true) {
+                    <p id="sucsignup">Successful</p>
+                    } else {
+                    <p id="failsignup">Fail</p>
+                    } }
+                </form>
+            </div>
+
+            <div class="formContent signinner">
+                <!-- Tabs Titles -->
+                <h2 onclick="activator('signup')" class="inactive underlineHover signin"> Sign Up </h2>
+                <h2 onclick="activator('signin')" class="active  signup">Sign In </h2>
+                <!-- SignUp Form -->
+                <form method="post" action="~/user/logining">
+                    <input type="text" required id="login" class="fadeIn second" name="login" placeholder="Login">
+                    <input type="password" required id="password" class="fadeIn third" name="password" placeholder="Password">
+                    <input id="submitter" type="submit" class="fadeIn fourth " value="Sign In"> 
+                </form>
+            </div>
+        </div>
+    </div>
+    
+</body>
+
+</html>
