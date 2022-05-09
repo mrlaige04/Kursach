@@ -3,9 +3,11 @@
 namespace Kursach.Controllers
 {
     [ApiController]
-    [Route("[controller]/Index")]
+    
     public class AccountController : Controller
     {
+        [HttpGet]
+        [Route("[controller]/Index")]
         public IActionResult Index()
         {
             return View("~/Views/Account/Account.cshtml");
@@ -19,7 +21,7 @@ namespace Kursach.Controllers
             
             ViewData["LOGGEDIN"] = false;
             ViewData["CURRENTUSERLOGIN"] = null;
-            return View("~/Views/Hello/Hello.cshtml");
+            return Redirect("~/");
             
         }
     }

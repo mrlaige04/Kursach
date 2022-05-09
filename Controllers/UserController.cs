@@ -1,4 +1,5 @@
-﻿using Kursach.Models.User;
+﻿using Kursach.Models.Meals;
+using Kursach.Models.User;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kursach.Controllers
@@ -44,7 +45,7 @@ namespace Kursach.Controllers
         {
             var log = Request.Form["login"].ToString();
             var pas = Request.Form["password"].ToString();
-
+            
             try
             {
                 if(db.Users.Where(user=>(user.login==log))?.Where(user=>user.password==pas).Count()>0)
@@ -64,33 +65,48 @@ namespace Kursach.Controllers
 
 
 
-        [HttpGet]
-        [Route("[controller]/UsersAll")]
-        public string UsersAll()
+        //[HttpGet]
+        //[Route("[controller]/UsersAll")]
+        //public string UsersAll()
+        //{
+        //    string ret = "";
+        //    var users = db.Users.ToList();
+        //    foreach (var item in users)
+        //    {
+        //        ret += item.ToString();
+        //        ret += "\n";
+        //    }
+        //    return ret;
+        //}
+
+
+
+        //[HttpGet("login")]
+        //public string Index(string login)
+        //{
+        //    string ret = "";
+        //    var users = db.Users.Where(user => user.login == login).Select(user => user);
+        //    foreach (var item in users)
+        //    {
+        //        ret += item.ToString();
+        //        ret += "\n";
+        //    }
+        //    return ret;
+        //}
+
+
+        [HttpPost]
+        [Route("[controller]/AddRecipe")]
+        public void AddRecipe(Meal meal, string login)
         {
-            string ret = "";
-            var users = db.Users.ToList();
-            foreach (var item in users)
+            if((bool)ViewData["LOGGEDIN"] == true && ViewData["CURRENTUSERLOGIN"]==login)
             {
-                ret += item.ToString();
-                ret += "\n";
+                db.Users.Where(user => user.login == login).First().AddRecipe(meal);
+                db.SaveChanges();
             }
-            return ret;
         }
 
 
-
-        [HttpGet("login")]
-        public string Index(string login)
-        {
-            string ret = "";
-            var users = db.Users.Where(user => user.login == login).Select(user => user);
-            foreach (var item in users)
-            {
-                ret += item.ToString();
-                ret += "\n";
-            }
-            return ret;
-        }
+        
     }
 }

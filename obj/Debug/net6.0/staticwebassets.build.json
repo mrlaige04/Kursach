@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "cMGUzgvHyMM0zepouVb63hAkP7FlQVH1VA4CBOU48jo=",
+  "Hash": "jBR8cb4KCEvUue8ZUSbOfFLXi7PYzt52oXpJDKJhBzw=",
   "Source": "Kursach",
   "BasePath": "_content/Kursach",
   "Mode": "Default",
@@ -16,40 +16,6 @@
     }
   ],
   "Assets": [
-    {
-      "Identity": "E:\\КПИ УЧЕБА\\1 курс 2 семестр\\Proga\\Kursova\\API\\Kursach\\wwwroot\\js\\mealloader.js",
-      "SourceId": "Kursach",
-      "SourceType": "Discovered",
-      "ContentRoot": "E:\\КПИ УЧЕБА\\1 курс 2 семестр\\Proga\\Kursova\\API\\Kursach\\wwwroot\\",
-      "BasePath": "_content/Kursach",
-      "RelativePath": "js/mealloader.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\js\\mealloader.js"
-    },
-    {
-      "Identity": "E:\\КПИ УЧЕБА\\1 курс 2 семестр\\Proga\\Kursova\\API\\Kursach\\wwwroot\\js\\signer.js",
-      "SourceId": "Kursach",
-      "SourceType": "Discovered",
-      "ContentRoot": "E:\\КПИ УЧЕБА\\1 курс 2 семестр\\Proga\\Kursova\\API\\Kursach\\wwwroot\\",
-      "BasePath": "_content/Kursach",
-      "RelativePath": "js/signer.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\js\\signer.js"
-    },
     {
       "Identity": "E:\\КПИ УЧЕБА\\1 курс 2 семестр\\Proga\\Kursova\\API\\Kursach\\wwwroot\\style\\account.css",
       "SourceId": "Kursach",

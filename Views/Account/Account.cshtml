@@ -1,6 +1,10 @@
-﻿@{ Layout = "~/Views/_Layout.cshtml"; }
+﻿@using Kursach.Models.User; 
+@model User; 
+@{ Layout = "~/Views/_Layout.cshtml"; }
 
 
+
+@if(ViewData["LOGGEDIN"] == null || (bool)ViewData["LOGGEDIN"]==false) {
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,75 +14,97 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="~/style/account.css">
-    <script  src="../wwwroot/js/signer.js"></script>
-    
+    <script src="../wwwroot/js/signer.js"></script>
+
 </head>
 
 <body>
-    @if(ViewData["LOGGEDIN"] == null || (bool)ViewData["LOGGEDIN"]==false) {        
-        <div class="signer">
-            <div class="wrapper fadeInDown">
-                <div class="formContent ">
-                    <!-- Tabs Titles -->
-                    <h2  class="active signup"> Sign Up </h2>
-                    <h2  class="inactive underlineHover signin">Sign In </h2>
-                    <!-- SignUp Form -->
-                    <form method="post" action="~/User/Index" class="formsigner">
-                        <input type="text" required id="login" class="fadeIn second" name="login" placeholder="Login">
-                        <input type="password" required id="password" class="fadeIn third" name="password" placeholder="Password">
-                        <input id="submitter" type="submit" class="fadeIn fourth " value="Sign Up"> @if(ViewData["successfullsignup"] != null) { if((bool)ViewData["successfullsignup"]==true) {
-                        <p id="sucsignup">Successful</p>
-                        } else {
-                        <p id="failsignup">Fail</p>
-                        } }
-                    </form>
-                </div>
 
-            
+    <div class="signer">
+        <div class="wrapper fadeInDown">
+            <div class="formContent ">
+                <!-- Tabs Titles -->
+                <h2 class="active signup"> Sign Up </h2>
+                <h2 class="inactive underlineHover signin">Sign In </h2>
+                <!-- SignUp Form -->
+                <form method="post" action="~/User/Index" class="formsigner">
+                    <input type="text" required id="login" class="fadeIn second" name="login" placeholder="Login">
+                    <input type="password" required id="password" class="fadeIn third" name="password" placeholder="Password">
+                    <input id="submitter" type="submit" class="fadeIn fourth " value="Sign Up"> @if(ViewData["successfullsignup"] != null) { if((bool)ViewData["successfullsignup"]==true) {
+                    <p id="sucsignup">Successful</p>
+                    } else {
+                    <p id="failsignup">Fail</p>
+                    } }
+                </form>
             </div>
+
+
         </div>
-        <script>
-            const signin = document.getElementsByClassName("signin")[0];
-            const signup = document.getElementsByClassName("signup")[0];
-            const forma = document.getElementsByClassName("formsigner")[0];
+    </div>
+    <script>
+        const signin = document.getElementsByClassName("signin")[0];
+        const signup = document.getElementsByClassName("signup")[0];
+        const forma = document.getElementsByClassName("formsigner")[0];
 
-            signin.onclick = function () {
-                signin.classList.add("active");
-                signin.classList.remove("inactive");
-                signin.classList.remove("underlineHover");
+        signin.onclick = function() {
+            signin.classList.add("active");
+            signin.classList.remove("inactive");
+            signin.classList.remove("underlineHover");
 
-                signup.classList.remove("active");
-                signup.classList.add("inactive");
-                signup.classList.add("underlineHover");
+            signup.classList.remove("active");
+            signup.classList.add("inactive");
+            signup.classList.add("underlineHover");
 
-                document.getElementById("submitter").value = "Sign In";
+            document.getElementById("submitter").value = "Sign In";
 
-                forma.setAttribute("action","../User/Logining");
+            forma.setAttribute("action", "../User/Logining");
 
-                document.getElementById("sucsignup").innerText = "";
-                document.getElementById("failsignup").innerText = "";
-            }
-            signup.onclick = function () {
+            document.getElementById("sucsignup").innerText = "";
+            document.getElementById("failsignup").innerText = "";
+        }
+        signup.onclick = function() {
 
-                signup.classList.add("active");
-                signup.classList.remove("inactive");
-                signup.classList.remove("underlineHover");
+            signup.classList.add("active");
+            signup.classList.remove("inactive");
+            signup.classList.remove("underlineHover");
 
-                signin.classList.remove("active");
-                signin.classList.add("inactive");
-                signin.classList.add("underlineHover");
+            signin.classList.remove("active");
+            signin.classList.add("inactive");
+            signin.classList.add("underlineHover");
 
-                document.getElementById("submitter").value = "Sign Up";
-                forma.setAttribute("action","../User/Index");
+            document.getElementById("submitter").value = "Sign Up";
+            forma.setAttribute("action", "../User/Index");
 
-                document.getElementById("sucsignup").innerText = "";
-                document.getElementById("failsignup").innerText = "";
-            }
-        </script>
-    } else
-    {
-        <p>ATTTTTT</p>
-    }
+            document.getElementById("sucsignup").innerText = "";
+            document.getElementById("failsignup").innerText = "";
+        }
+    </script>
+
 </body>
 
 </html>
+} else {
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyRecipes</title>
+</head>
+
+<body>
+
+</body>
+<div class="content">
+    <div class="leftside">
+
+    </div>
+    <div class="rightside">
+        @Model.GetType()
+    </div>
+</div>
+
+</html>
+}
