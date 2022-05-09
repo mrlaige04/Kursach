@@ -55,7 +55,7 @@ namespace Kursach.Models.User
         public void AddRecipe(Meal meal)
         {
             listrecipes.Add(meal);
-            recipes = JsonSerializer.Serialize<List<Meal>>(listrecipes);
+            recipes = JsonSerializer.Serialize(listrecipes);
         }
 
 
