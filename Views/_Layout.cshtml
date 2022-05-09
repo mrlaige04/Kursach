@@ -11,7 +11,11 @@
                 <li><a href="~/MealsAll/Index">Search</a></li>
                 <li><a href="~/Account/Index">Account</a></li>
                 <li><a href="~/APIDOCS">API Docs</a></li>
-            </ul>
+                @if (ViewData["LOGGEDIN"] != null && (bool)ViewData["LOGGEDIN"] == true)
+                {
+                    <li><a href="~/Account/Logout">Log out</a></li>
+                }
+        </ul>
         </div>
         @RenderBody()
         <footer>

@@ -10,5 +10,17 @@ namespace Kursach.Controllers
         {
             return View("~/Views/Account/Account.cshtml");
         }
+
+        
+        [HttpGet]
+        [Route("[controller]/Logout")]
+        public  IActionResult Logout()
+        {
+            
+            ViewData["LOGGEDIN"] = false;
+            ViewData["CURRENTUSERLOGIN"] = null;
+            return View("~/Views/Hello/Hello.cshtml");
+            
+        }
     }
 }

@@ -40,7 +40,7 @@ namespace Kursach.Controllers
 
         [HttpPost]
         [Route("~/User/Logining")]
-        public void Logining()
+        public IActionResult Logining()
         {
             var log = Request.Form["login"].ToString();
             var pas = Request.Form["password"].ToString();
@@ -50,6 +50,7 @@ namespace Kursach.Controllers
                 if(db.Users.Where(user=>(user.login==log))?.Where(user=>user.password==pas).Count()>0)
                 {
                     ViewData["LOGGEDIN"] = true;
+                    ViewData["CURRENTUSERLOGIN"] = log.ToString();
                 } else {
                     ViewData["LOGGEDIN"] = false;
                 }
@@ -57,7 +58,7 @@ namespace Kursach.Controllers
             {
                 ViewData["LOGGEDIN"] = false;
             }
-            Response.Redirect("~/MyMeals/GetAll");
+            return View("~/Views/Account/Account.cshtml");
         }
         
 

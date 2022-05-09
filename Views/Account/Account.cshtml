@@ -10,44 +10,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="~/style/account.css">
-    <script type="text/javascript" src="~/js/signer.js"></script>
+    <script  src="../wwwroot/js/signer.js"></script>
     
 </head>
 
 <body>
+    @if(ViewData["LOGGEDIN"] == null || (bool)ViewData["LOGGEDIN"]==false) {        
+        <div class="signer">
+            <div class="wrapper fadeInDown">
+                <div class="formContent ">
+                    <!-- Tabs Titles -->
+                    <h2  class="active signup"> Sign Up </h2>
+                    <h2  class="inactive underlineHover signin">Sign In </h2>
+                    <!-- SignUp Form -->
+                    <form method="post" action="~/User/Index" class="formsigner">
+                        <input type="text" required id="login" class="fadeIn second" name="login" placeholder="Login">
+                        <input type="password" required id="password" class="fadeIn third" name="password" placeholder="Password">
+                        <input id="submitter" type="submit" class="fadeIn fourth " value="Sign Up"> @if(ViewData["successfullsignup"] != null) { if((bool)ViewData["successfullsignup"]==true) {
+                        <p id="sucsignup">Successful</p>
+                        } else {
+                        <p id="failsignup">Fail</p>
+                        } }
+                    </form>
+                </div>
 
-    <div class="signer">
-        <div class="wrapper fadeInDown">
-            <div class="formContent signupper">
-                <!-- Tabs Titles -->
-                <h2 onclick="activator('signup')" class="active signin"> Sign Up </h2>
-                <h2 onclick="activator('signin')" class="inactive underlineHover signup">Sign In </h2>
-                <!-- SignUp Form -->
-                <form method="post" action="~/User/Index">
-                    <input type="text" required id="login" class="fadeIn second" name="login" placeholder="Login">
-                    <input type="password" required id="password" class="fadeIn third" name="password" placeholder="Password">
-                    <input id="submitter" type="submit" class="fadeIn fourth " value="Sign Up"> @if(ViewData["successfullsignup"] != null) { if((bool)ViewData["successfullsignup"]==true) {
-                    <p id="sucsignup">Successful</p>
-                    } else {
-                    <p id="failsignup">Fail</p>
-                    } }
-                </form>
-            </div>
-
-            <div class="formContent signinner">
-                <!-- Tabs Titles -->
-                <h2 onclick="activator('signup')" class="inactive underlineHover signin"> Sign Up </h2>
-                <h2 onclick="activator('signin')" class="active  signup">Sign In </h2>
-                <!-- SignUp Form -->
-                <form method="post" action="~/user/logining">
-                    <input type="text" required id="login" class="fadeIn second" name="login" placeholder="Login">
-                    <input type="password" required id="password" class="fadeIn third" name="password" placeholder="Password">
-                    <input id="submitter" type="submit" class="fadeIn fourth " value="Sign In"> 
-                </form>
+            
             </div>
         </div>
-    </div>
-    
+        <script>
+            const signin = document.getElementsByClassName("signin")[0];
+            const signup = document.getElementsByClassName("signup")[0];
+            const forma = document.getElementsByClassName("formsigner")[0];
+
+            signin.onclick = function () {
+                signin.classList.add("active");
+                signin.classList.remove("inactive");
+                signin.classList.remove("underlineHover");
+
+                signup.classList.remove("active");
+                signup.classList.add("inactive");
+                signup.classList.add("underlineHover");
+
+                document.getElementById("submitter").value = "Sign In";
+
+                forma.setAttribute("action","../User/Logining");
+
+                document.getElementById("sucsignup").innerText = "";
+                document.getElementById("failsignup").innerText = "";
+            }
+            signup.onclick = function () {
+
+                signup.classList.add("active");
+                signup.classList.remove("inactive");
+                signup.classList.remove("underlineHover");
+
+                signin.classList.remove("active");
+                signin.classList.add("inactive");
+                signin.classList.add("underlineHover");
+
+                document.getElementById("submitter").value = "Sign Up";
+                forma.setAttribute("action","../User/Index");
+
+                document.getElementById("sucsignup").innerText = "";
+                document.getElementById("failsignup").innerText = "";
+            }
+        </script>
+    } else
+    {
+        <p>ATTTTTT</p>
+    }
 </body>
 
 </html>
