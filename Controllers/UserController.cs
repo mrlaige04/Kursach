@@ -101,12 +101,25 @@ namespace Kursach.Controllers
         {
             if((bool)ViewData["LOGGEDIN"] == true && ViewData["CURRENTUSERLOGIN"]==login)
             {
-                db.Users.Where(user => user.login == login).First().AddRecipe(meal);
+                //db.Users.Where(user => user.login == login).First().AddRecipe(meal);
                 db.SaveChanges();
             }
         }
 
 
+        [HttpPost]
+        [Route("[controller]/LikeRecept")]
+        public void LikeRecept(Meal meal)
+        {
+            if ((bool)ViewData["LOGGEDIN"] == true) {
+                
+                db.Users.Where(user => user.login == ViewData["CURRENTUSERLOGIN"].ToString())?.First()?.AddRecipe(meal);
+            } else
+            {
+                Response.StatusCode = 403;
+                return;
+            }
+        }
         
     }
 }

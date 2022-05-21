@@ -12,7 +12,38 @@
         public string strTags { get; set; }
         public string strYoutube { get; set; }
 
+        public List<string> ingredients;
 
+
+        public void SetIngrs()
+        {
+            ingredients = SummarizeIngredients();
+        }
+        private List<string> SummarizeIngredients()
+        {
+            List<string> ingrs = new List<string>();
+            ingrs.Add(strIngredient1);
+            ingrs.Add(strIngredient2);
+            ingrs.Add(strIngredient3);
+            ingrs.Add(strIngredient4);
+            ingrs.Add(strIngredient5);
+            ingrs.Add(strIngredient6);
+            ingrs.Add(strIngredient7);
+            ingrs.Add(strIngredient8);
+            ingrs.Add(strIngredient9);
+            ingrs.Add(strIngredient10);
+            ingrs.Add(strIngredient11);
+            ingrs.Add(strIngredient12);
+            ingrs.Add(strIngredient13);
+            ingrs.Add(strIngredient14);
+            ingrs.Add(strIngredient15);
+            ingrs.Add(strIngredient16);
+            ingrs.Add(strIngredient17);
+            ingrs.Add(strIngredient18);
+            ingrs.Add(strIngredient19);
+            ingrs.Add(strIngredient20);
+            return ingrs;
+        }
 
         #region Ingredients
         public string strIngredient1 { get; set; }
@@ -65,7 +96,7 @@
 
         public string strSource { get; set; }
         public string strImageSource { get; set; }
-        public string strCreativeCommonsConfirmed { get; set; }
-        public string dateModified { get; set; }
+        
+       
     }
 }

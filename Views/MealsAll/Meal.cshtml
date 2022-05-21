@@ -1,4 +1,5 @@
 ﻿
+@using Kursach.Models.Edamam_Food
 @using Kursach.Models.Meals;
 @model ListOfMeals
 @{
@@ -62,42 +63,86 @@
                             <button type="submit">Search</button>
                         </form>
                     </div>
-
+                    <div class="multisearch">
+                        <h3>MultiSearch</h3>
+                        <form method="get" action="~/MealsAll/MultiSearch?value={value}">
+                            <input type="text" name="value" id="ingredient" required>
+                            <button type="submit">Search</button>
+                        </form>
+                    </div>
                 </div>
             </div>
             <div class="verticalline"></div>
             <div class="rightsidesearch">
-                @if (Model.meals != null)
+            @if (Model != null)
+            {
+                if (Model.edamam == null)
                 {
-                    @foreach (var item in Model?.meals)
-                    {
-                        <div class="meal">
-                            <div class="maininfo">
-                                <div class="mealimg">
-                                    <img width="120px" height="120px" src="@item.strMealThumb">
-                                </div>
-                                <div class="descrip">
-                                    <h2><b>@item.strMeal</b></h2>
-                                    <p>ID: @item.idMeal</p>                                
-                                </div>
-                                <div class="showmore" onlick="showmore()">
-                                    <i class="fa fa-angle-double-down" style="font-size:24px"></i>
-                                </div>
+                   @if (Model.meals != null)
+                   {
+                        @foreach (var item in Model?.meals)
+                        {
+                            @@item.SetIngrs();
+                            <div class="meal">
+                                    <div class="mealimg">
+                                        <img width="120" height="120" src="@item.strMealThumb">
+                                    </div>
+                                    <div class="descrip">
+                                        <h2><b>@item.strMeal</b></h2>
+                                        <p>ID: @item.idMeal</p>                                
+                                    </div>
+                                    <div class="mealingredients">
+                                        @if (item.ingredients != null)
+                                        {
+                                            <p>Ingredients:</p>
+                                            <ul class="ingredientslist">
+                                                @foreach (var ingr in item.ingredients)
+                                                {
+                                                if (!string.IsNullOrEmpty(ingr))
+                                                {
+                                                    <li>@ingr</li>
+                                                }
+                                        }
+                                            </ul>
+                                        }
+                                    </div>
+                                    <p>Area: @item.strArea</p>
+                                    <p>Tags: @item.strTags</p>
+                                    @if(!string.IsNullOrEmpty(item.strYoutube)){
+                                        <p><a target="_blank" href="@item.strYoutube">Youtube tutorial</a></p>
+                                    }
+                                    <img style="cursor:pointer;" onclick="likerecept(@item)" width="50" height="50" src="https://i.pinimg.com/originals/19/3a/10/193a10dc517a5434d011965a28da2f86.png">
                             </div>
-                            <div class="additioninfo">
-                                <p>Area: @item.strArea</p>
-                                <p>Youtube tutorial: @item.strYoutube</p>
+                        }
+                   }
+                } 
+                else
+                {
+                    @if( Model.edamam != null ) {
+                    @foreach (var item in Model.edamam.hints)
+                        {
+                            <div class="meal">
+                                <img src="@item.image" alt="no photo"/>
+                                <p>@item.food.label</p>
+                                <p>Id: @item.food.foodId</p>
+                                <p>Category: @item.category</p>
+                                <p>@item.food.uri</p>
                             </div>
-                        </div>
+                        }
                     }
                 }
+            }
+            
+                
         </div>
         </div>
         <script>
             
-            function showmore() {
-                var element = document.getElementsByClassName("additioninfo");
-                element.style.display = "block";
+            function likerecept(meal) {
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", "../User/LikeRecept", false);
+                xhr.send(meal);
+                
             }
         </script>
     </body>

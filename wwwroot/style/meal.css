@@ -3,8 +3,8 @@
     flex-direction: row;
     justify-content: flex-start;
     height: 100%;
-    
 }
+
 .leftsidesearch {
     max-width: 33%;
     background: #dee3e0;
@@ -14,27 +14,32 @@
 .rightsidesearch {
     padding: 50px 0 0 80px;
 }
+
 .meal {
     padding: 20px;
     display: flex;
     flex-direction: column;
-    width:max-content;
+    min-width: 100%;
     border: 1.6px solid black;
     border-radius: 15px;
     margin-bottom: 30px;
 }
+
 .maininfo {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
 }
+
 .descrip {
     margin-left: 80px;
 }
+
 .meal:hover {
     background-color: #c7dcff;
     border-radius: 15px;
 }
+
 .maininfo b {
     font-size: larger;
 }
@@ -48,4 +53,8 @@
     margin-top: auto;
     margin-bottom: auto;
     cursor: pointer;
+}
+
+.mealingredients ul {
+    list-style-type: none;
 }

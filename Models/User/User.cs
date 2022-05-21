@@ -17,6 +17,8 @@ namespace Kursach.Models.User
         public string recipes { get; set; }
 
         private List<Meal> listrecipes { get; set; }
+
+
         public User(string login, string password)
         {
             this.login = login;
@@ -27,6 +29,8 @@ namespace Kursach.Models.User
         {
 
         }
+
+
         private string Hasher()
         {
             using (MD5 md5 = MD5.Create())
@@ -54,14 +58,20 @@ namespace Kursach.Models.User
 
         public void AddRecipe(Meal meal)
         {
+            //TODO: PARSE RECIPE BY ID;
             listrecipes.Add(meal);
-            recipes = JsonSerializer.Serialize(listrecipes);
+            reciper();
         }
 
 
         public override string ToString()
         {
             return "Login: " + login + " Password: " + password + " Recipes: " + recipes;
+        }
+
+        private void reciper()
+        {
+            recipes = JsonSerializer.Serialize(listrecipes);
         }
     }
 }

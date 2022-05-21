@@ -1,3 +1,4 @@
+using Kursach.Models.Edamam_Food;
 using Kursach.Models.Meals;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
@@ -54,6 +55,8 @@ namespace Kursach.Controllers
         [Route("/[controller]/MealByMainIngredient")]
         public IActionResult MealByMainIngredient(string ingredient)
         {
+            //var asyncresult = MealsIdAsync($"https://www.themealdb.com/api/json/v1/1/filter.php?i={ingredient}");
+            //return View("Meal", asyncresult.Result);
             message = new HttpRequestMessage()
             {
                 Method = HttpMethod.Get,
@@ -64,8 +67,10 @@ namespace Kursach.Controllers
             {
                 var body = response.Content.ReadAsStringAsync().Result;
                 ListOfMeals meals = JsonSerializer.Deserialize<ListOfMeals>(body);
-                return View("Meal", meals);
+                //return Redirect($"../MealsAll/MealById?id={meals?.meals.First().idMeal}");
+                return View("Meal", ReturnMealsById(CalculateIdsAsync(meals)?.Result?.ToArray()).Result);
             }
+            
         }
 
 
@@ -91,7 +96,7 @@ namespace Kursach.Controllers
             {
                 var body = response.Content.ReadAsStringAsync().Result;
                 ListOfMeals meals = JsonSerializer.Deserialize<ListOfMeals>(body);
-                return View("Meal", meals);
+                return View("Meal", ReturnMealsById(CalculateIdsAsync(meals)?.Result?.ToArray()).Result);
             }
         }
 
@@ -117,11 +122,27 @@ namespace Kursach.Controllers
             {
                 var body = response.Content.ReadAsStringAsync().Result;
                 ListOfMeals meals = JsonSerializer.Deserialize<ListOfMeals>(body);
-                return View("Meal", meals);
+                return View("Meal", ReturnMealsById(CalculateIdsAsync(meals)?.Result?.ToArray()).Result);
             }
         }
 
+        
 
+        private async Task<List<string>> CalculateIdsAsync(ListOfMeals meals)
+        {
+            return await Task.Run(async () => {
+                
+                List<string> ids = new List<string>();
+                if (meals != null && meals.meals != null)
+                {
+                    foreach (var item in meals?.meals)
+                    {
+                        ids.Add(item.idMeal);
+                    }
+                }
+                return ids;
+            });
+        }
 
 
 
@@ -141,9 +162,9 @@ namespace Kursach.Controllers
             };
             using (var response = client.Send(message))
             {
-                var body = response.Content.ReadAsStringAsync().Result;
-                ListOfMeals meals = JsonSerializer.Deserialize<ListOfMeals>(body);
-                return View("Meal", meals);
+                var res = response.Content.ReadAsStringAsync().Result;
+                var recipes = JsonSerializer.Deserialize<ListOfMeals>(res);
+                return View("Meal", recipes);
             }
         }
 
@@ -169,12 +190,57 @@ namespace Kursach.Controllers
             {
                 var body = response.Content.ReadAsStringAsync().Result;
                 ListOfMeals meals = JsonSerializer.Deserialize<ListOfMeals>(body);
-                return View("Meal", meals);
+                return View("Meal", ReturnMealsById(CalculateIdsAsync(meals)?.Result?.ToArray()).Result);
 
             }
 
 
 
+        }
+
+
+
+
+
+        
+
+
+
+        // Parse Meals by ID
+        private async Task<ListOfMeals> ReturnMealsById(params string[] id)
+        {
+            return await Task.Run(() => {
+                ListOfMeals meals = new ListOfMeals();
+                try
+                {
+                    foreach (var item in id)
+                    {
+                        message = new HttpRequestMessage()
+                        {
+                            Method = HttpMethod.Get,
+                            RequestUri = new Uri($"https://www.themealdb.com/api/json/v1/1/lookup.php?i={item}")
+                        };
+                        using (var response = client.Send(message))
+                        {
+                            var res = response.Content.ReadAsStringAsync().Result;
+                            var recipes = JsonSerializer.Deserialize<ListOfMeals>(res);
+                            foreach (var recps in recipes?.meals)
+                            {
+                                meals.meals.Add(recps);
+                            }
+                        }
+                    }
+                }
+                catch
+                {
+
+                    //return null;
+
+                }
+                return meals;
+
+            });
+            
         }
     }
 }
