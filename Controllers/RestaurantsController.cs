@@ -14,7 +14,7 @@ namespace Kursach.Controllers
         [HttpGet]
         public string Index()
         {
-            string str ="";
+            string str = "";
             reqmessage = new HttpRequestMessage()
             {
                 Method = HttpMethod.Get,

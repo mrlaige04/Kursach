@@ -3,9 +3,11 @@
 namespace Kursach.Controllers
 {
     [ApiController]
-    
+
     public class AccountController : Controller
     {
+        ApplicationContext db = new ApplicationContext();
+
         [HttpGet]
         [Route("[controller]/Index")]
         public IActionResult Index()
@@ -13,16 +15,16 @@ namespace Kursach.Controllers
             return View("~/Views/Account/Account.cshtml");
         }
 
-        
+
         [HttpGet]
         [Route("[controller]/Logout")]
-        public  IActionResult Logout()
+        public IActionResult Logout()
         {
-            
-            ViewData["LOGGEDIN"] = false;
-            ViewData["CURRENTUSERLOGIN"] = null;
+
+            currentuser.isLogged = false;
+            currentuser.LOGIN = null;
             return Redirect("~/");
-            
+
         }
     }
 }

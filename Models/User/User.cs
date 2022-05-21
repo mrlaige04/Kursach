@@ -16,7 +16,10 @@ namespace Kursach.Models.User
 
         public string recipes { get; set; }
 
-        private List<Meal> listrecipes { get; set; }
+
+
+        [NonSerialized]
+        public List<Meal> listrecipes = new List<Meal>();
 
 
         public User(string login, string password)
@@ -58,8 +61,32 @@ namespace Kursach.Models.User
 
         public void AddRecipe(Meal meal)
         {
-            //TODO: PARSE RECIPE BY ID;
-            listrecipes.Add(meal);
+            User curuser = new ApplicationContext().Users.Where(user => user.login == currentuser.LOGIN).First();
+            
+            if (curuser.recipes != null) { 
+                listrecipes = JsonSerializer.Deserialize<List<Meal>>(curuser.recipes?.ToString()); 
+            }
+
+            var isContain = (from i in listrecipes
+                             where i.idMeal == meal.idMeal
+                             select i).Count() > 0;
+            if (!isContain) { 
+                listrecipes.Add(meal); 
+            }
+            reciper();
+        }
+
+        public void RemoveRecipe(Meal meal)
+        {
+            var curUser = new ApplicationContext().Users.Where(user => user.login == currentuser.LOGIN).First();
+            if(curUser.recipes != null)
+            {
+                listrecipes = JsonSerializer.Deserialize<List<Meal>>(curUser?.recipes);
+            }
+            listrecipes = (from i in listrecipes
+                          where i.idMeal != meal.idMeal
+                          select i).ToList();
+            listrecipes?.Remove(meal);
             reciper();
         }
 

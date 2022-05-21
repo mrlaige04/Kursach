@@ -12,7 +12,7 @@ namespace Kursach
 
         }
 
-        
+
     }
 
     public static class DBExtention

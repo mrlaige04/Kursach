@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Kursach.Controllers
 {
 
-    //TODO:MAKE THIS CONTROLLER
+    
 
     /// <summary>
     /// My Meals

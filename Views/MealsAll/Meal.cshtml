@@ -25,127 +25,120 @@
                 <div class="containers">
 
                     <div class="searchbyid">
-                        <h3>ById</h3>
+                        
                         <form method="get" action="~/MealsAll/MealById?id={id}">
+                            <h3>ById</h3>
                             <input type="text" name="id" id="id" required>
                             <button type="submit">Search</button>                           
                         </form>
                     </div>
 
                     <div class="searchbyname">
-                        <h3>ByName</h3>
+                        
                         <form method="get" action="~/MealsAll/MealByName?name={name}">
+                            <h3>ByName</h3>
                             <input type="text" name="name" id="name" required>
                             <button type="submit" >Search</button>
                         </form>
                     </div>
 
                     <div class="searchbyregion">
-                        <h3>ByRegion</h3>
+                        
                         <form method="get" action="~/MealsAll/AreaMeal?area={area}">
+                            <h3>ByRegion</h3>
                             <input type="text" name="area" id="region" required>
                             <button type="submit">Search</button>
                         </form>
                     </div>
 
                     <div class="searchbycategory">
-                        <h3>ByCategory</h3>
+                        
                         <form method="get" action="~/MealsAll/MealByCategory?category={category}">
+                            <h3>ByCategory</h3>
                             <input type="text" name="category" id="category" required>
                             <button type="submit">Search</button>
                         </form>
                     </div>
 
                     <div class="searchbyingredient">
-                        <h3>ByIngredient</h3>
+                        
                         <form method="get" action="~/MealsAll/MealByMainIngredient?ingredient={ingredient}">
+                            <h3>ByIngredient</h3>
                             <input type="text" name="ingredient" id="ingredient" required>
                             <button type="submit">Search</button>
                         </form>
                     </div>
-                    <div class="multisearch">
-                        <h3>MultiSearch</h3>
-                        <form method="get" action="~/MealsAll/MultiSearch?value={value}">
-                            <input type="text" name="value" id="ingredient" required>
-                            <button type="submit">Search</button>
-                        </form>
-                    </div>
+                    
                 </div>
             </div>
             <div class="verticalline"></div>
             <div class="rightsidesearch">
-            @if (Model != null)
-            {
-                if (Model.edamam == null)
-                {
-                   @if (Model.meals != null)
-                   {
-                        @foreach (var item in Model?.meals)
-                        {
-                            @@item.SetIngrs();
-                            <div class="meal">
-                                    <div class="mealimg">
-                                        <img width="120" height="120" src="@item.strMealThumb">
-                                    </div>
-                                    <div class="descrip">
-                                        <h2><b>@item.strMeal</b></h2>
-                                        <p>ID: @item.idMeal</p>                                
-                                    </div>
-                                    <div class="mealingredients">
-                                        @if (item.ingredients != null)
-                                        {
-                                            <p>Ingredients:</p>
-                                            <ul class="ingredientslist">
-                                                @foreach (var ingr in item.ingredients)
-                                                {
-                                                if (!string.IsNullOrEmpty(ingr))
-                                                {
-                                                    <li>@ingr</li>
-                                                }
-                                        }
-                                            </ul>
-                                        }
-                                    </div>
-                                    <p>Area: @item.strArea</p>
-                                    <p>Tags: @item.strTags</p>
-                                    @if(!string.IsNullOrEmpty(item.strYoutube)){
-                                        <p><a target="_blank" href="@item.strYoutube">Youtube tutorial</a></p>
-                                    }
-                                    <img style="cursor:pointer;" onclick="likerecept(@item)" width="50" height="50" src="https://i.pinimg.com/originals/19/3a/10/193a10dc517a5434d011965a28da2f86.png">
-                            </div>
-                        }
-                   }
-                } 
-                else
-                {
-                    @if( Model.edamam != null ) {
-                    @foreach (var item in Model.edamam.hints)
-                        {
-                            <div class="meal">
-                                <img src="@item.image" alt="no photo"/>
-                                <p>@item.food.label</p>
-                                <p>Id: @item.food.foodId</p>
-                                <p>Category: @item.category</p>
-                                <p>@item.food.uri</p>
-                            </div>
-                        }
+                <div class="searchresult">
+                    <p>Search results</p>
+                    @if(Model == null || Model.meals == null)
+                    {
+                        <p>Found 0 results</p>
+                    } else
+                    {
+                        <p>Found @Model.meals.Count results</p>
                     }
-                }
-            }
-            
-                
+            </div>
+                @if (Model.meals != null)
+                    {
+                            @foreach (var item in Model?.meals)
+                            {
+                                @@item.SetIngrs();
+                                <div class="meal">
+                                        <div class="maininfo">
+                                            <img width="160" height="160" src="@item.strMealThumb">
+                                            <div class="descrip">
+                                                <h2><b>@item.strMeal</b></h2>
+                                                <p>ID: @item.idMeal</p>                                
+                                            </div>
+                                        </div>
+                                        <div class="mealingredients">
+                                            @if (item.ingredients != null)
+                                            {
+                                                <p><b>Ingredients:</b></p>
+                                                <ul class="ingredientslist">
+                                                    @foreach (var ingr in item.ingredients)
+                                                    {
+                                                    if (!string.IsNullOrEmpty(ingr))
+                                                    {
+                                                        <li>@ingr</li>
+                                                    }
+                                            }
+                                                </ul>
+                                            }
+                                        </div>
+                                        <p>Area: @item.strArea</p>
+                                        <p>Tags: @item.strTags</p>
+                                        @if(!string.IsNullOrEmpty(item.strYoutube)){
+                                            <a target="_blank" href="@item.strYoutube"><button id="youtubetutorial">Youtube tutorial</button></a>
+                                            @*<p id="youtubetutor"><a target="_blank" href="@item.strYoutube">Youtube tutorial</a></p>*@
+                                        }
+                                        <hr>
+                                        <p>Instructions: @item.strInstructions</p>
+                                        <img style="cursor:pointer;" onclick="likerecept(@item.idMeal)" width="50" height="50" src="https://i.pinimg.com/originals/19/3a/10/193a10dc517a5434d011965a28da2f86.png">
+                                </div>
+                            }
+                    }
+            </div>
         </div>
-        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
             
-            function likerecept(meal) {
-                let xhr = new XMLHttpRequest();
-                xhr.open("POST", "../User/LikeRecept", false);
-                xhr.send(meal);
-                
-            }
+            function likerecept(id) {     
+                 $.ajax({
+                 type: "POST",
+                 url: `../User/LikeRecept?id=${id}`,
+                 
+             });
+           }
         </script>
     </body>
 </html>
+
+
 
 

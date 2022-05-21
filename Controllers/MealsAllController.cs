@@ -1,4 +1,3 @@
-using Kursach.Models.Edamam_Food;
 using Kursach.Models.Meals;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
@@ -70,7 +69,7 @@ namespace Kursach.Controllers
                 //return Redirect($"../MealsAll/MealById?id={meals?.meals.First().idMeal}");
                 return View("Meal", ReturnMealsById(CalculateIdsAsync(meals)?.Result?.ToArray()).Result);
             }
-            
+
         }
 
 
@@ -126,12 +125,13 @@ namespace Kursach.Controllers
             }
         }
 
-        
+
 
         private async Task<List<string>> CalculateIdsAsync(ListOfMeals meals)
         {
-            return await Task.Run(async () => {
-                
+            return await Task.Run(async () =>
+            {
+
                 List<string> ids = new List<string>();
                 if (meals != null && meals.meals != null)
                 {
@@ -202,14 +202,15 @@ namespace Kursach.Controllers
 
 
 
-        
+
 
 
 
         // Parse Meals by ID
         private async Task<ListOfMeals> ReturnMealsById(params string[] id)
         {
-            return await Task.Run(() => {
+            return await Task.Run(() =>
+            {
                 ListOfMeals meals = new ListOfMeals();
                 try
                 {
@@ -240,7 +241,7 @@ namespace Kursach.Controllers
                 return meals;
 
             });
-            
+
         }
     }
 }

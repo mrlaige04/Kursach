@@ -96,7 +96,7 @@
 
         public string strSource { get; set; }
         public string strImageSource { get; set; }
-        
-       
+
+
     }
 }

@@ -1,22 +1,6 @@
-﻿.content {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    height: 100%;
-}
-
-.leftsidesearch {
-    max-width: 33%;
-    background: #dee3e0;
-    padding: 50px 80px;
-}
-
-.rightsidesearch {
-    padding: 50px 40px;
-}
-
-.meal {
-    padding: 25px;
+﻿.meal {
+    margin: 20px;
+    padding: 35px;
     display: flex;
     flex-direction: column;
     min-width: 80%;
@@ -79,54 +63,54 @@
     background: rgb(97, 245, 97);
 }
 
-form {
-    display: flex;
+#unlikereceptimage {
+    cursor: pointer;
+}
+
+.createnewrecept {
+    padding: 20px;
+    font-weight: bold;
+    margin: 20px auto;
+    border-radius: 15px;
+    background-color: rgb(103, 196, 87);
+    border: none;
+    cursor: pointer;
+}
+
+.createnewrecept a {
+    text-decoration: none;
+    color: black;
+    font-size: larger;
+}
+
+.receptcreator {
+    display: block;
+    justify-content: center;
     flex-direction: column;
     border: 1px solid black;
     border-radius: 15px;
     padding: 20px;
-    margin-bottom: 15px;
+    margin: 20px 20px 20px 20px;
+    background-color: #f9f9f9;
 }
 
-form input {
-    width: auto;
-}
-
-form input[type="text"] {
-    font-size: large;
-    text-align: center;
-    border-radius: 15px;
-    padding: 8px;
-    border: none;
-    overflow: visible;
-}
-
-form input[type="text"]:hover {
-    border: none;
-}
-
-form input[type="text"]:focus {
-    border: none;
-}
-
-form button {
-    padding: 20px;
-    background: #86c8f7c9;
-    border: none;
-    font-size: medium;
-    font-weight: bold;
-    border-radius: 15px;
-    cursor: pointer;
+.receptcreator form input {
     margin-top: 20px;
+    font-size: larger;
+    text-align: center;
 }
 
-.leftsidesearch h3 {
-    font-size: x-large;
+.receptcreator form {
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: larger;
 }
 
-.searchresult p:first-child {
-    font-size: xx-large;
-    font-weight: bolder;
-    margin: 0;
-    margin-bottom: 5px;
+.receptcreator form button {
+    padding: 30px;
+    font-size: larger;
+    font-weight: bold;
+    cursor: pointer;
 }

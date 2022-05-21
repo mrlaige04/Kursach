@@ -1,10 +1,17 @@
-﻿@using Kursach.Models.User; 
+﻿@using Kursach.Models.Meals
+@using Kursach.Models.User;
+@using Kursach;
+@using System.Text.Json
 @model User; 
+@{
+    ApplicationContext db = new ApplicationContext();
+    
+}
 @{ Layout = "~/Views/_Layout.cshtml"; }
 
 
 
-@if(ViewData["LOGGEDIN"] == null || (bool)ViewData["LOGGEDIN"]==false) {
+@if(currentuser.isLogged == false) {
 <!DOCTYPE html>
 <html lang="en">
 
@@ -84,26 +91,94 @@
 
 </html>
 } else {
-<!DOCTYPE html>
+
+
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/style/mymeals.css">
     <title>MyRecipes</title>
 </head>
 
 <body>
 
 </body>
-<div class="content">
-    <div class="leftside">
+<div class="mycontent">
+        <button class="createnewrecept" onclick="create()">Create new</button>
 
-    </div>
-    <div class="rightside">
-        
-    </div>
+        <div class="receptcreator">
+            <form method="post" action="../User/CreateNew">
+                Img source: <input type="text" name="mealimg"> <br>
+                Name: <input type="text" name="mealname"><br>
+                Area: <input type="text" name="mealarea"><br>
+                Tag: <input type="text" name="mealtag"><br>
+                Instructions: <input type="area" name="mealinstructions"><br>
+                <button type="submit">Create</button>
+            </form>
+        </div>
+
+        @if(db.Users.Where(user=>user.login == currentuser.LOGIN).First().recipes != null) {
+            @foreach (var item in JsonSerializer.Deserialize<List<Meal>>(db.Users.Where(user=>user.login == currentuser.LOGIN).First().recipes))
+            {
+                @@item.SetIngrs();
+                <div class="meal">
+                    <div class="maininfo">
+                        <img width="160" height="160" src="@item.strMealThumb">
+                        <div class="descrip">
+                            <h2><b>@item.strMeal</b></h2>
+                            <p>ID: @item.idMeal</p>                                
+                        </div>
+                    </div>
+                    <div class="mealingredients">
+                        @if (item.ingredients != null)
+                        {
+                            <p><b>Ingredients:</b></p>
+                            <ul class="ingredientslist">
+                                @foreach (var ingr in item.ingredients)
+                                {
+                                if (!string.IsNullOrEmpty(ingr))
+                                {
+                                    <li>@ingr</li>
+                                }
+                        }
+                            </ul>
+                        }
+                    </div>
+                    <p>Area: @item.strArea</p>
+                    <p>Tags: @item.strTags</p>
+                    @if(!string.IsNullOrEmpty(item.strYoutube)){
+                        <a target="_blank" href="@item.strYoutube"><button id="youtubetutorial">Youtube tutorial</button></a>
+                        @*<p id="youtubetutor"><a target="_blank" href="@item.strYoutube">Youtube tutorial</a></p>*@
+                    }
+                    
+                    <p>Instructions: @item.strInstructions</p>
+                    <img id="unlikereceptimage" width="50" height="50" src="https://cdn-icons-png.flaticon.com/512/2891/2891491.png" onclick="unlikerecept(@item.idMeal)"/>
+                </div>
+         
+            }
+        }
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script>
+            
+            function unlikerecept(id) {     
+                 $.ajax({
+                 type: "POST",
+                 url: `../User/UnLikeRecept?id=${id}`,
+                 success: function() {
+                     location.reload();
+                 }
+                });
+            }
+             function create() {
+                alert("HELLO");
+                var el = document.getElementsByClassName("receptcreator")[0];
+                el.style.display="flex";
+            }
+           
+        </script>
 </div>
 
 </html>
