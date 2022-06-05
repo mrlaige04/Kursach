@@ -16,7 +16,7 @@ namespace Kursach
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=helloappdb;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer(@"Server=tcp:kursachdbserver.database.windows.net,1433;Initial Catalog=Kursach_db;Persist Security Info=False;User ID=sqladmin;Password=qazwsx104QAZWSX!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
         }
 
 
