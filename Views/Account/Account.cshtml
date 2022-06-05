@@ -7,11 +7,13 @@
     ApplicationContext db = new();
 
 }
-@{ Layout = "~/Views/_Layout.cshtml"; }
-
+@{
+    Layout = "~/Views/_Layout.cshtml";
+}
 
 
 @if(currentuser.isLogged == false) {
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -121,7 +123,7 @@
         </div>
 
         @if(db?.Users.Where(user => user.login == currentuser.LOGIN)?.First()?.recipes != null) {
-            @foreach (var meal in JsonSerializer.Deserialize<List<MealFull>>(db.Users.Where(user=>user.login == currentuser.LOGIN).First().recipes))
+            @foreach (var meal in JsonSerializer.Deserialize<List<MealFull>>(db.Users.Where(user=>user.login == currentuser.LOGIN).First().recipes)) @*==currentuser.LOGIN*@
             {
                 <div class="meal">
                         <div class="maininfo">
