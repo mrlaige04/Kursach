@@ -1,11 +1,11 @@
-﻿@using Kursach.Models.Meals
+﻿@using Kursach.Models.Spoonacular;
 @using Kursach.Models.User;
 @using Kursach;
 @using System.Text.Json
 @model User; 
 @{
-    ApplicationContext db = new ApplicationContext();
-    
+    ApplicationContext db = new();
+
 }
 @{ Layout = "~/Views/_Layout.cshtml"; }
 
@@ -99,6 +99,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <link rel="stylesheet" href="~/style/mymeals.css">
     <title>MyRecipes</title>
 </head>
@@ -107,56 +108,98 @@
 
 </body>
 <div class="mycontent">
-        <button class="createnewrecept" onclick="create()">Create new</button>
+        <button id="createnewmealbutton" onclick="showHideCreate()">Create New</button>
 
         <div class="receptcreator">
             <form method="post" action="../User/CreateNew">
-                Img source: <input type="text" name="mealimg"> <br>
-                Name: <input type="text" name="mealname"><br>
-                Area: <input type="text" name="mealarea"><br>
-                Tag: <input type="text" name="mealtag"><br>
-                Instructions: <input type="area" name="mealinstructions"><br>
+                Img source: <input type="text" name="mealimg" required> <br>
+                Name: <input type="text" name="mealname" required><br>              
+                Ready In Minutes: <input type="number" name="readyInMinutes" required><br>
+                Instructions: <input type="area" name="mealinstructions" required><br>
                 <button type="submit">Create</button>
             </form>
         </div>
 
-        @if(db.Users.Where(user=>user.login == currentuser.LOGIN).First().recipes != null) {
-            @foreach (var item in JsonSerializer.Deserialize<List<Meal>>(db.Users.Where(user=>user.login == currentuser.LOGIN).First().recipes))
+        @if(db?.Users.Where(user => user.login == currentuser.LOGIN)?.First()?.recipes != null) {
+            @foreach (var meal in JsonSerializer.Deserialize<List<MealFull>>(db.Users.Where(user=>user.login == currentuser.LOGIN).First().recipes))
             {
-                @@item.SetIngrs();
                 <div class="meal">
-                    <div class="maininfo">
-                        <img width="160" height="160" src="@item.strMealThumb">
-                        <div class="descrip">
-                            <h2><b>@item.strMeal</b></h2>
-                            <p>ID: @item.idMeal</p>                                
+                        <div class="maininfo">
+                            <img src="@meal.image" width="90" height="90" alt="mealimage">
+                            <div class="mealname">
+                                <p >@meal.title</p>
+                                <p>Id: @meal.id</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="mealingredients">
-                        @if (item.ingredients != null)
-                        {
-                            <p><b>Ingredients:</b></p>
-                            <ul class="ingredientslist">
-                                @foreach (var ingr in item.ingredients)
+                        <details>
+                            <summary>More info</summary>
+                            <div class="additionalinfo">
+                                @if (meal.dishTypes != null)
                                 {
-                                if (!string.IsNullOrEmpty(ingr))
-                                {
-                                    <li>@ingr</li>
+                                    <p><b>Types</b>: @foreach (var type in meal.dishTypes)
+                                        {
+                                            @String.Format(type+" ")
+                                        }</p>
                                 }
-                        }
-                            </ul>
-                        }
+
+                                <p><b>Can be cooked in</b> :@String.Format(@meal.readyInMinutes+" minutes") </p>
+
+                                <a target="_blank" href="@meal.sourceUrl"><button>Source</button></a>
+
+                                <div class="instructions">
+                                        @meal.instructions
+                                </div>
+
+                                
+                                @if (meal.extendedIngredients != null)
+                                {
+                                    <div class="ingredients">
+                                        <b>Ingredients:</b>
+                                        @foreach (var ingr in @meal.extendedIngredients)
+                                        {
+                                            <div class="ingredient">
+                                                <p>Name: @ingr.name</p>
+                                                <p>Id: @ingr.id</p>  
+                                                <div class="measures">
+                                                    Measure:
+                                                    <p>Amount: @ingr.measures.metric.amount @ingr.measures.metric.unitLong</p> 
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+
+                                @if (meal.menuItems != null)
+                                {
+                                    <div class="restaurants">
+                                        <b>Restaurants:</b>
+                                        @foreach (var rest in meal.menuItems?.menuItems)
+                                        {
+                                            <div class="restik">
+                                                <img src="@rest.image" width="40" height="40">
+                                                <div class="restname">
+                                                    <p>@rest.title</p>
+                                                    <p><b>Restaurant Chain:</b> @rest.restaurantChain</p>                                                   
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                        </div>
+                        </details>
+
+                        <img style="cursor:pointer; margin-top:30px;" 
+                        src="https://cdn-icons-png.flaticon.com/512/2891/2891491.png" width="65" height="65" 
+                        onclick="unlikerecept(@meal.id)">
+
+                        <img style="cursor:pointer; margin-top:30px;" 
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg/1024px-Edit_icon_%28the_Noun_Project_30184%29.svg.png" width="65" height="65" 
+                        onclick="editrecipe(@meal.id)">
+
+
+                        
                     </div>
-                    <p>Area: @item.strArea</p>
-                    <p>Tags: @item.strTags</p>
-                    @if(!string.IsNullOrEmpty(item.strYoutube)){
-                        <a target="_blank" href="@item.strYoutube"><button id="youtubetutorial">Youtube tutorial</button></a>
-                        @*<p id="youtubetutor"><a target="_blank" href="@item.strYoutube">Youtube tutorial</a></p>*@
-                    }
-                    
-                    <p>Instructions: @item.strInstructions</p>
-                    <img id="unlikereceptimage" width="50" height="50" src="https://cdn-icons-png.flaticon.com/512/2891/2891491.png" onclick="unlikerecept(@item.idMeal)"/>
-                </div>
+                
          
             }
         }
@@ -170,14 +213,29 @@
                  success: function() {
                      location.reload();
                  }
+                
                 });
             }
-             function create() {
-                alert("HELLO");
+            function create() {
+                
                 var el = document.getElementsByClassName("receptcreator")[0];
                 el.style.display="flex";
             }
-           
+            function showHideCreate() {
+                var el = document.getElementsByClassName("receptcreator")[0];
+                if(el.style.display=="none") {
+                    el.style.display = "block";
+                } else {
+                    el.style.display = "none";
+                }
+            }
+
+            function editrecipe(id) {
+                $.ajax({
+                 type: "GET",
+                 url: `../User/GetEditRecipePage?id=${id}`,
+                 });
+            }
         </script>
 </div>
 

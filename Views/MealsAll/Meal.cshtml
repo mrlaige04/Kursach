@@ -1,7 +1,8 @@
 ﻿
-@using Kursach.Models.Edamam_Food
-@using Kursach.Models.Meals;
-@model ListOfMeals
+
+@using System.Text.Json
+@using Kursach.Models.Spoonacular
+@model List<MealFull>;
 @{
     Layout = "~/Views/_Layout.cshtml";
 }
@@ -24,14 +25,7 @@
             <div class="leftsidesearch">
                 <div class="containers">
 
-                    <div class="searchbyid">
-                        
-                        <form method="get" action="~/MealsAll/MealById?id={id}">
-                            <h3>ById</h3>
-                            <input type="text" name="id" id="id" required>
-                            <button type="submit">Search</button>                           
-                        </form>
-                    </div>
+                    
 
                     <div class="searchbyname">
                         
@@ -42,99 +36,100 @@
                         </form>
                     </div>
 
-                    <div class="searchbyregion">
-                        
-                        <form method="get" action="~/MealsAll/AreaMeal?area={area}">
-                            <h3>ByRegion</h3>
-                            <input type="text" name="area" id="region" required>
-                            <button type="submit">Search</button>
-                        </form>
-                    </div>
-
-                    <div class="searchbycategory">
-                        
-                        <form method="get" action="~/MealsAll/MealByCategory?category={category}">
-                            <h3>ByCategory</h3>
-                            <input type="text" name="category" id="category" required>
-                            <button type="submit">Search</button>
-                        </form>
-                    </div>
-
-                    <div class="searchbyingredient">
-                        
-                        <form method="get" action="~/MealsAll/MealByMainIngredient?ingredient={ingredient}">
-                            <h3>ByIngredient</h3>
-                            <input type="text" name="ingredient" id="ingredient" required>
-                            <button type="submit">Search</button>
-                        </form>
-                    </div>
+                    
+                    
                     
                 </div>
             </div>
             <div class="verticalline"></div>
             <div class="rightsidesearch">
-                <div class="searchresult">
-                    <p>Search results</p>
-                    @if(Model == null || Model.meals == null)
-                    {
-                        <p>Found 0 results</p>
-                    } else
-                    {
-                        <p>Found @Model.meals.Count results</p>
-                    }
-            </div>
-                @if (Model.meals != null)
-                    {
-                            @foreach (var item in Model?.meals)
-                            {
-                                @@item.SetIngrs();
-                                <div class="meal">
-                                        <div class="maininfo">
-                                            <img width="160" height="160" src="@item.strMealThumb">
-                                            <div class="descrip">
-                                                <h2><b>@item.strMeal</b></h2>
-                                                <p>ID: @item.idMeal</p>                                
+            @if (Model != null)
+            {
+                @foreach (var meal in Model)
+                {
+                    <div class="meal">
+                        <div class="maininfo">
+                            <img src="@meal.image" width="90" height="90" alt="mealimage">
+                            <div class="mealname">
+                                <p >@meal.title</p>
+                                <p>Id: @meal.id</p>
+                            </div>
+                        </div>
+                        <details>
+                            <summary>More info</summary>
+                            <div class="additionalinfo">
+                                <p><b>Types</b>: @foreach (var type in meal.dishTypes)
+                                    {
+                                        @String.Format(type+" ")
+                                    }</p>
+
+                                <p><b>Can be cooked in</b> :@String.Format(@meal.readyInMinutes+" minutes") </p>
+
+                                <a target="_blank" href="@meal.sourceUrl"><button>Source</button></a>
+
+                                <div class="instructions">
+                                    @meal.instructions
+                                </div>
+
+
+                                <div class="ingredients">
+                                    <b>Ingredients:</b>
+                                    @foreach (var ingr in @meal.extendedIngredients)
+                                    {
+                                        <div class="ingredient">
+                                            <p>Name: @ingr.name</p>
+                                            <p>Id: @ingr.id</p>  
+                                            <div class="measures">
+                                                Measure:
+                                                <p>Amount: @ingr.measures.metric.amount @ingr.measures.metric.unitLong</p> 
                                             </div>
                                         </div>
-                                        <div class="mealingredients">
-                                            @if (item.ingredients != null)
-                                            {
-                                                <p><b>Ingredients:</b></p>
-                                                <ul class="ingredientslist">
-                                                    @foreach (var ingr in item.ingredients)
-                                                    {
-                                                    if (!string.IsNullOrEmpty(ingr))
-                                                    {
-                                                        <li>@ingr</li>
-                                                    }
-                                            }
-                                                </ul>
-                                            }
-                                        </div>
-                                        <p>Area: @item.strArea</p>
-                                        <p>Tags: @item.strTags</p>
-                                        @if(!string.IsNullOrEmpty(item.strYoutube)){
-                                            <a target="_blank" href="@item.strYoutube"><button id="youtubetutorial">Youtube tutorial</button></a>
-                                            @*<p id="youtubetutor"><a target="_blank" href="@item.strYoutube">Youtube tutorial</a></p>*@
-                                        }
-                                        <hr>
-                                        <p>Instructions: @item.strInstructions</p>
-                                        <img style="cursor:pointer;" onclick="likerecept(@item.idMeal)" width="50" height="50" src="https://i.pinimg.com/originals/19/3a/10/193a10dc517a5434d011965a28da2f86.png">
+                                    }
                                 </div>
-                            }
-                    }
+
+                                @if (meal.menuItems != null && meal.menuItems.menuItems != null)
+                                {
+                                    <div class="restaurants">
+                                        <b>Restaurants:</b>
+                                        @foreach (var rest in meal.menuItems.menuItems)
+                                        {
+                                            <div class="restik">
+                                                <img src="@rest.image" width="40" height="40">
+                                                <div class="restname">
+                                                    <p>@rest.title</p>
+                                                    <p><b>Restaurant Chain</b>:@rest.restaurantChain</p> 
+                                                    <a target="_blank" href="https://google.com/search?q=@rest.restaurantChain">Find restaurant in Google!</a>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </details>
+
+                        <img style="cursor:pointer; margin-top:20px;" 
+                        src="https://cdn-icons-png.flaticon.com/512/2107/2107956.png" width="80" height="80" 
+                        onclick="likerecept(@meal.id)">
+
+                    </div>
+
+                }
+            }
+
             </div>
         </div>
+        
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
             
-            function likerecept(id) {     
+            function likerecept(id) {                   
                  $.ajax({
                  type: "POST",
-                 url: `../User/LikeRecept?id=${id}`,
-                 
-             });
-           }
+                 url: `../User/LikeRecept?id=${id}`                
+             });       
+            }
+
+            
         </script>
     </body>
 </html>

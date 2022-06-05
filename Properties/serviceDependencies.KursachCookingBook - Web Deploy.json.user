@@ -1,0 +1,34 @@
+{
+  "dependencies": {
+    "apis1": {
+      "restored": true,
+      "restoreTime": "2022-06-05T17:18:13.9459786Z"
+    },
+    "mssql1": {
+      "restored": true,
+      "restoreTime": "2022-06-05T17:21:24.1031429Z"
+    }
+  },
+  "parameters": {
+    "mssql1.subscriptionId": {
+      "Name": "mssql1.subscriptionId",
+      "Type": "subscription",
+      "Value": "96f722b4-0fa7-4021-9e5c-7c967a86d6f6"
+    },
+    "mssql1.resourceGroupName": {
+      "Name": "mssql1.resourceGroupName",
+      "Type": "resourceGroup",
+      "Value": "KursachCookBook"
+    },
+    "apis1.resourceGroupName": {
+      "Name": "apis1.resourceGroupName",
+      "Type": "resourceGroup",
+      "Value": "Kursach20220605190107ResourceGroup"
+    },
+    "apis1.subscriptionId": {
+      "Name": "apis1.subscriptionId",
+      "Type": "subscription",
+      "Value": "96f722b4-0fa7-4021-9e5c-7c967a86d6f6"
+    }
+  }
+}

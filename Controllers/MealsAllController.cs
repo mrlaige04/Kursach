@@ -1,4 +1,5 @@
-using Kursach.Models.Meals;
+
+using Kursach.Models.Spoonacular;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 namespace Kursach.Controllers
@@ -31,43 +32,16 @@ namespace Kursach.Controllers
             message = new HttpRequestMessage()
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri("https://www.themealdb.com/api/json/v1/1/random.php")
+                RequestUri = new Uri("https://api.spoonacular.com/recipes/random?apiKey=83c7e059495b468e87e5ea32c1215288")
             };
 
             using (response = client.Send(message))
             {
                 var body = response.Content.ReadAsStringAsync().Result;
-                ListOfMeals meals = JsonSerializer.Deserialize<ListOfMeals>(body);
-                return View("Meal", meals);
-            }
-        }
+                RandomMeal sresult = JsonSerializer.Deserialize<RandomMeal>(body);
 
-
-
-
-        /// <summary>
-        /// Search by ingredient
-        /// </summary>
-        /// <param name="ingredient"></param>
-        /// <returns></returns>
-        [HttpGet("ingredient")]
-        [Route("/[controller]/MealByMainIngredient")]
-        public IActionResult MealByMainIngredient(string ingredient)
-        {
-            //var asyncresult = MealsIdAsync($"https://www.themealdb.com/api/json/v1/1/filter.php?i={ingredient}");
-            //return View("Meal", asyncresult.Result);
-            message = new HttpRequestMessage()
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri($"https://www.themealdb.com/api/json/v1/1/filter.php?i={ingredient}")
-            };
-
-            using (response = client.Send(message))
-            {
-                var body = response.Content.ReadAsStringAsync().Result;
-                ListOfMeals meals = JsonSerializer.Deserialize<ListOfMeals>(body);
-                //return Redirect($"../MealsAll/MealById?id={meals?.meals.First().idMeal}");
-                return View("Meal", ReturnMealsById(CalculateIdsAsync(meals)?.Result?.ToArray()).Result);
+                try { sresult.recipes.First().menuItems = WhereServing(sresult?.recipes.First().title); }catch { }
+                return View("Meal", sresult?.recipes?.ToList());
             }
 
         }
@@ -75,32 +49,14 @@ namespace Kursach.Controllers
 
 
 
-
-        /// <summary>
-        /// Search by category
-        /// </summary>
-        /// <param name="category"></param>
-        /// <returns></returns>
-        [HttpGet("category")]
-        [Route("/[controller]/MealByCategory")]
-        public IActionResult MealByCategory(string category)
-        {
-            message = new HttpRequestMessage()
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri($"https://www.themealdb.com/api/json/v1/1/filter.php?c={category}")
-            };
-
-            using (response = client.Send(message))
-            {
-                var body = response.Content.ReadAsStringAsync().Result;
-                ListOfMeals meals = JsonSerializer.Deserialize<ListOfMeals>(body);
-                return View("Meal", ReturnMealsById(CalculateIdsAsync(meals)?.Result?.ToArray()).Result);
-            }
-        }
+        
 
 
 
+
+
+        
+        // TODO: IMPROVE SEARCH(NAME, INGREDIENT, ID)
 
         /// <summary>
         /// Search by Name
@@ -114,134 +70,92 @@ namespace Kursach.Controllers
             message = new HttpRequestMessage()
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"https://www.themealdb.com/api/json/v1/1/search.php?s={name}")
+                RequestUri = new Uri($"https://api.spoonacular.com/recipes/complexSearch?query={name}&apiKey=83c7e059495b468e87e5ea32c1215288")
             };
-
+            List<MealFull> mealsfull = new List<MealFull>();
             using (response = client.Send(message))
-            {
-                var body = response.Content.ReadAsStringAsync().Result;
-                ListOfMeals meals = JsonSerializer.Deserialize<ListOfMeals>(body);
-                return View("Meal", ReturnMealsById(CalculateIdsAsync(meals)?.Result?.ToArray()).Result);
-            }
-        }
-
-
-
-        private async Task<List<string>> CalculateIdsAsync(ListOfMeals meals)
-        {
-            return await Task.Run(async () =>
-            {
-
-                List<string> ids = new List<string>();
-                if (meals != null && meals.meals != null)
-                {
-                    foreach (var item in meals?.meals)
-                    {
-                        ids.Add(item.idMeal);
-                    }
-                }
-                return ids;
-            });
-        }
-
-
-
-        /// <summary>
-        /// Search by id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpGet("id")]
-        [Route("/[controller]/MealById")]
-        public IActionResult MealById(long id)
-        {
-            message = new HttpRequestMessage()
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri($"https://www.themealdb.com/api/json/v1/1/lookup.php?i={id}")
-            };
-            using (var response = client.Send(message))
             {
                 var res = response.Content.ReadAsStringAsync().Result;
-                var recipes = JsonSerializer.Deserialize<ListOfMeals>(res);
-                return View("Meal", recipes);
+                SearchResult sres = JsonSerializer.Deserialize<SearchResult>(res);
+                List<string> ids = new List<string>();
+                foreach (var item in sres?.results)
+                {
+                    ids.Add(item.id.ToString());
+                }
+
+                mealsfull = ReturnMealsById(ids).Result;
+                
+                return View("Meal", mealsfull);
             }
         }
 
 
 
+        
 
-        /// <summary>
-        /// Search by Area(Geography)
-        /// </summary>
-        /// <param name="area"></param>
-        /// <returns></returns>
-        [HttpGet("area")]
-        [Route("/[controller]/AreaMeal")]
-        public IActionResult AreaMeal(string area)
+
+
+        
+
+
+
+
+
+
+
+
+
+        
+        private MenuItems WhereServing(string name)
         {
             message = new HttpRequestMessage()
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"https://www.themealdb.com/api/json/v1/1/filter.php?a={area}")
+                RequestUri = new Uri($"https://api.spoonacular.com/food/menuItems/search?query={name}&apiKey=83c7e059495b468e87e5ea32c1215288")
             };
-
-            using (response = client.Send(message))
+            using (var resp = client.Send(message))
             {
-                var body = response.Content.ReadAsStringAsync().Result;
-                ListOfMeals meals = JsonSerializer.Deserialize<ListOfMeals>(body);
-                return View("Meal", ReturnMealsById(CalculateIdsAsync(meals)?.Result?.ToArray()).Result);
-
+                var res = resp.Content.ReadAsStringAsync().Result;
+                var body = JsonSerializer.Deserialize<MenuItems>(res);
+                return body;
             }
-
-
-
         }
 
 
 
 
 
-
-
-
-
-        // Parse Meals by ID
-        private async Task<ListOfMeals> ReturnMealsById(params string[] id)
+        //Parse Meals by ID
+        private async Task<List<MealFull>> ReturnMealsById(List<string> id)
         {
+            #nullable disable
             return await Task.Run(() =>
             {
-                ListOfMeals meals = new ListOfMeals();
+                List<MealFull> meals = new List<MealFull>();
                 try
                 {
-                    foreach (var item in id)
+                    string ids = String.Join(',', id);
+                    message = new HttpRequestMessage()
                     {
-                        message = new HttpRequestMessage()
-                        {
-                            Method = HttpMethod.Get,
-                            RequestUri = new Uri($"https://www.themealdb.com/api/json/v1/1/lookup.php?i={item}")
-                        };
-                        using (var response = client.Send(message))
-                        {
-                            var res = response.Content.ReadAsStringAsync().Result;
-                            var recipes = JsonSerializer.Deserialize<ListOfMeals>(res);
-                            foreach (var recps in recipes?.meals)
-                            {
-                                meals.meals.Add(recps);
-                            }
-                        }
+                        Method = HttpMethod.Get,
+                        RequestUri = new Uri($"https://api.spoonacular.com/recipes/informationBulk?ids={ids}&apiKey=83c7e059495b468e87e5ea32c1215288")
+                    };
+                    using (var response = client.Send(message))
+                    {
+                        var res = response.Content.ReadAsStringAsync().Result;
+                        if(res != null) meals = JsonSerializer.Deserialize<List<MealFull>>(res);
                     }
-                }
-                catch
-                {
+                    foreach (var meal in meals)
+                    {
+                        meal.menuItems = WhereServing(meal.title);
+                    }
 
-                    //return null;
-
                 }
+                catch { }
                 return meals;
 
             });
-
+            #nullable restore
         }
     }
 }

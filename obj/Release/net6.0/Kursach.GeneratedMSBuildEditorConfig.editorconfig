@@ -15,10 +15,26 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = E:\КПИ УЧЕБА\1 курс 2 семестр\Proga\Kursova\API\Kursach
 build_property._RazorSourceGeneratorDebug = 
 
+[E:/КПИ УЧЕБА/1 курс 2 семестр/Proga/Kursova/API/Kursach/Views/Account/Account.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxBY2NvdW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/КПИ УЧЕБА/1 курс 2 семестр/Proga/Kursova/API/Kursach/Views/Account/EditPage.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxFZGl0UGFnZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/КПИ УЧЕБА/1 курс 2 семестр/Proga/Kursova/API/Kursach/Views/APIDOCS.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQVBJRE9DUy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/КПИ УЧЕБА/1 курс 2 семестр/Proga/Kursova/API/Kursach/Views/Hello/Hello.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSGVsbG9cSGVsbG8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [E:/КПИ УЧЕБА/1 курс 2 семестр/Proga/Kursova/API/Kursach/Views/MealsAll/Meal.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVhbHNBbGxcTWVhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[E:/КПИ УЧЕБА/1 курс 2 семестр/Proga/Kursova/API/Kursach/Views/User/User.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxVc2VyLmNzaHRtbA==
+[E:/КПИ УЧЕБА/1 курс 2 семестр/Proga/Kursova/API/Kursach/Views/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX0xheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

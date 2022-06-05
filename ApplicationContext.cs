@@ -1,5 +1,5 @@
 ﻿using Kursach.Models.User;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 namespace Kursach
 {
     public class ApplicationContext : DbContext
@@ -7,9 +7,16 @@ namespace Kursach
         public DbSet<User> Users { get; set; }
 
 
-        public ApplicationContext() : base("DefaultConnection")
-        {
+        
 
+        public ApplicationContext()
+        {
+            //Database.EnsureDeleted();
+            Database.EnsureCreated();
+        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=helloappdb;Trusted_Connection=True;");
         }
 
 

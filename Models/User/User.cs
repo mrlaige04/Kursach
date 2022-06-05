@@ -1,4 +1,5 @@
-﻿using Kursach.Models.Meals;
+﻿
+using Kursach.Models.Spoonacular;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 using System.Text;
@@ -17,20 +18,23 @@ namespace Kursach.Models.User
         public string recipes { get; set; }
 
 
+        private ApplicationContext db;
 
-        [NonSerialized]
-        public List<Meal> listrecipes = new List<Meal>();
+        
+        public List<MealFull> listrecipes = new List<MealFull>();
 
 
-        public User(string login, string password)
+        public User(string login, string password, ApplicationContext db) : this(db)
         {
             this.login = login;
             this.password = password;
             hash = Hasher();
+            
         }
-        public User()
+        public User(ApplicationContext db)
         {
-
+            this.db = db;
+            reciper();
         }
 
 
@@ -59,34 +63,35 @@ namespace Kursach.Models.User
             }
         }
 
-        public void AddRecipe(Meal meal)
+        public void AddRecipe(MealFull meal)
         {
-            User curuser = new ApplicationContext().Users.Where(user => user.login == currentuser.LOGIN).First();
-            
-            if (curuser.recipes != null) { 
-                listrecipes = JsonSerializer.Deserialize<List<Meal>>(curuser.recipes?.ToString()); 
+            User curuser = db.Users.Where(user => user.login == currentuser.LOGIN).First();
+
+            if (curuser.recipes != null)
+            {
+                listrecipes = JsonSerializer.Deserialize<List<MealFull>>(curuser.recipes);
             }
 
             var isContain = (from i in listrecipes
-                             where i.idMeal == meal.idMeal
+                             where i.id == meal.id
                              select i).Count() > 0;
-            if (!isContain) { 
-                listrecipes.Add(meal); 
+            if (!isContain)
+            {
+                listrecipes.Add(meal);
             }
             reciper();
         }
 
-        public void RemoveRecipe(Meal meal)
+        public void RemoveRecipe(string id)
         {
-            var curUser = new ApplicationContext().Users.Where(user => user.login == currentuser.LOGIN).First();
-            if(curUser.recipes != null)
+            var curUser = db.Users.Where(user => user.login == currentuser.LOGIN).First();
+            if (curUser.recipes != null)
             {
-                listrecipes = JsonSerializer.Deserialize<List<Meal>>(curUser?.recipes);
+                listrecipes = JsonSerializer.Deserialize<List<MealFull>>(curUser?.recipes);
             }
             listrecipes = (from i in listrecipes
-                          where i.idMeal != meal.idMeal
-                          select i).ToList();
-            listrecipes?.Remove(meal);
+                           where i.id.ToString() != id
+                           select i).ToList();
             reciper();
         }
 
@@ -98,7 +103,8 @@ namespace Kursach.Models.User
 
         private void reciper()
         {
-            recipes = JsonSerializer.Serialize(listrecipes);
+            if (listrecipes == null) listrecipes = new();
+            recipes = JsonSerializer.Serialize(listrecipes.ToArray());
         }
     }
 }

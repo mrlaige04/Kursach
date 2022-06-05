@@ -6,12 +6,14 @@ namespace Kursach.Controllers
 
     public class AccountController : Controller
     {
-        ApplicationContext db = new ApplicationContext();
+        
+        ApplicationContext db = new();
 
         [HttpGet]
         [Route("[controller]/Index")]
         public IActionResult Index()
         {
+            
             return View("~/Views/Account/Account.cshtml");
         }
 

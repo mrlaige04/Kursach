@@ -1,6 +1,8 @@
-﻿using Kursach.Models.Meals;
+﻿
+using Kursach.Models.Spoonacular;
 using Kursach.Models.User;
 using Microsoft.AspNetCore.Mvc;
+
 using System.Text.Json;
 
 namespace Kursach.Controllers
@@ -9,15 +11,18 @@ namespace Kursach.Controllers
     [Route("/[controller]/Index")]
     public class UserController : Controller
     {
-        public ApplicationContext db = new ApplicationContext();
+        public ApplicationContext db = new();
 
+
+        
 
         [HttpPost]
         public IActionResult Index()
         {
             var log = Request.Form["login"].ToString();
             var pas = Request.Form["password"].ToString();
-            User us1 = new User(log, pas);
+            User us1 = new User(log, pas,db);
+            
 
             try
             {
@@ -80,20 +85,8 @@ namespace Kursach.Controllers
         {
             if(currentuser.isLogged == true)
             {
-                HttpClient client = new HttpClient();
-                HttpRequestMessage message = new HttpRequestMessage()
-                {
-                    Method = HttpMethod.Get,
-                    RequestUri = new Uri($"https://www.themealdb.com/api/json/v1/1/lookup.php?i={id}")
-                };
-                using (var response = client.Send(message))
-                {
-                    string result = response.Content.ReadAsStringAsync().Result;
-                    Meal meal = JsonSerializer.Deserialize<ListOfMeals>(result).meals.First();
-                    db.Users.Where(user => user.login == currentuser.LOGIN).First().RemoveRecipe(meal);
-                    db.SaveChanges();
-                }
-                
+                db.Users.Where(user => user.login == currentuser.LOGIN).First().RemoveRecipe(id);
+                db.SaveChanges();
             }
             
         }
@@ -103,20 +96,23 @@ namespace Kursach.Controllers
         [Route("~/[controller]/LikeRecept")]
         public void LikeRecept(string id)
         {
+
+            //MealFull likedMeal = JsonSerializer.Deserialize<MealFull>(jsonmeal);
             if (currentuser.isLogged == true)
             {
-                Meal meal;
+                MealFull likedmeal;
                 HttpClient client = new HttpClient();
                 HttpRequestMessage message = new HttpRequestMessage()
                 {
                     Method = HttpMethod.Get,
-                    RequestUri = new Uri($"https://www.themealdb.com/api/json/v1/1/lookup.php?i={id}")
+                    RequestUri = new Uri($"https://api.spoonacular.com/recipes/{id}/information?apiKey=83c7e059495b468e87e5ea32c1215288")
                 };
                 using (var response = client.Send(message))
                 {
-                    meal = JsonSerializer.Deserialize<ListOfMeals>(response.Content.ReadAsStringAsync().Result).meals.First();
+                    var res = response.Content.ReadAsStringAsync().Result;
+                    likedmeal = JsonSerializer.Deserialize<MealFull>(res);
                 }
-                db.Users.Where(user => user.login == currentuser.LOGIN)?.First()?.AddRecipe(meal);
+                db.Users.Where(user => user.login == currentuser.LOGIN)?.First()?.AddRecipe(likedmeal);
                 db.SaveChanges();
             }
             else
@@ -124,7 +120,7 @@ namespace Kursach.Controllers
                 Response.StatusCode = 403;
                 return;
             }
-            
+
         }
 
 
@@ -134,15 +130,31 @@ namespace Kursach.Controllers
         {
             var img = Request.Form["mealimg"].ToString();
             var name = Request.Form["mealname"].ToString();
-            var area = Request.Form["mealarea"].ToString();
-            var tag = Request.Form["mealtag"].ToString();
+            var readyinminutes = Request.Form["readyInMinutes"].ToString();
+            
             var Instructions = Request.Form["mealinstructions"].ToString();
 
-            Meal meal = new Meal() { strMealThumb = img, strMeal = name, strArea = area, strTags = tag, strInstructions = Instructions };
+            MealFull meal = new();
+            meal.image = img;
+            meal.title = name;
+            meal.readyInMinutes = int.Parse(readyinminutes);
+            meal.instructions = Instructions;
+
+
+            meal.id = (readyinminutes.ToString() + name.ToString()).GetHashCode(); 
+
+            //meal.ingredients = ingredients.Split(',').ToList();
+
             if (currentuser.isLogged == true)
             {
-                db.Users.Where(user => user.login == currentuser.LOGIN)?.First()?.AddRecipe(meal);
-                db.SaveChanges();
+                try
+                {
+                    db.Users.Where(user => user.login == currentuser.LOGIN)?.First()?.AddRecipe(meal);
+                    db.SaveChanges();
+                } catch
+                {
+                    
+                }
             }
             else
             {
@@ -152,5 +164,36 @@ namespace Kursach.Controllers
             Response.Redirect("../Account/Index");
         }
 
+
+
+
+        [HttpGet]
+        [Route("~/[controller]/GetEditRecipePage")]
+        public IActionResult GetEditRecipePage(int id)
+        {
+            var User = db.Users.Where(user => user.login == currentuser.LOGIN).First();
+            User.listrecipes = JsonSerializer.Deserialize<List<MealFull>>(User.recipes);
+            return View("~/Views/Account/EditPage.cshtml", User.listrecipes.Where(recipe=>recipe.id==id).First());
+        }
+
+
+        [HttpPost]
+        [Route("~/[controller]/EditRecipe")]
+        public IActionResult EditRecipe() // TODO: EDIT RECIPE
+        {
+            var img = Request.Form["imagesrc"].ToString();
+            var title = Request.Form["title"].ToString();
+            var readyin = Request.Form["readyin"].ToString();
+            var instructions = Request.Form["instructions"].ToString();
+            var id = Request.Form["id"].ToString();
+
+            var curuser = db.Users.Where(user => user.login == currentuser.LOGIN).First();
+            var recipe = curuser.listrecipes.Where(recipe => recipe.id.ToString() == id).First();
+            recipe.image = img;
+            recipe.title = title;
+            recipe.readyInMinutes = int.Parse(readyin);
+            recipe.instructions = instructions;
+            return Redirect("~/Account/Index");
+        }
     }
 }
