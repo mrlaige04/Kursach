@@ -63,9 +63,9 @@ namespace Kursach.Models.User
             }
         }
 
-        public void AddRecipe(MealFull meal)
+        public void AddRecipe(MealFull meal, string login)
         {
-            User curuser = db.Users.Where(user => user.login == currentuser.LOGIN).First();
+            User curuser = db.Users.Where(user => user.login == login).First();
 
             if (curuser.recipes != null)
             {
@@ -80,11 +80,12 @@ namespace Kursach.Models.User
                 listrecipes.Add(meal);
             }
             reciper();
+            db.SaveChanges();
         }
 
-        public void RemoveRecipe(string id)
+        public void RemoveRecipe(string id, string login)
         {
-            var curUser = db.Users.Where(user => user.login == currentuser.LOGIN).First();
+            var curUser = db.Users.Where(user => user.login == login).First();
             if (curUser.recipes != null)
             {
                 listrecipes = JsonSerializer.Deserialize<List<MealFull>>(curUser?.recipes);
@@ -93,6 +94,7 @@ namespace Kursach.Models.User
                            where i.id.ToString() != id
                            select i).ToList();
             reciper();
+            db.SaveChanges();
         }
 
 

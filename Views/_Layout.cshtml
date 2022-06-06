@@ -1,5 +1,8 @@
 ﻿@using Kursach;
 <!doctype html>
+@{
+    var login = Context.Request.Cookies["login"];
+}
 <html>
     <head>
         <link rel="stylesheet" href="~/style/layout.css">
@@ -9,11 +12,16 @@
             <ul>
                 <li><a href="~/">Home</a></li>
                 <li><a href="~/MealsAll/Index">Search</a></li>
-                <li><a href="~/Account/Index">Account</a></li>                
-                @if (currentuser.isLogged == true)
+                <li><a href="~/Account/Index">Account</a></li>    
+                
+                @if(!string.IsNullOrEmpty(login))
                 {
                     <li><a href="~/Account/Logout">Log out</a></li>
                 }
+                @*@if (currentuser.isLogged == true)
+                    {
+                        <li><a href="~/Account/Logout">Log out</a></li>
+                    }*@
         </ul>
         </div>
         @RenderBody()

@@ -57,20 +57,24 @@ namespace Kursach.Controllers
             {
                 if (db.Users.Where(user => (user.login == log))?.Where(user => user.password == pas).Count() > 0)
                 {
-                    currentuser.isLogged = true;
-                    currentuser.LOGIN = log.ToString();
+                    Response.Cookies.Append("login", log);
+                    //currentuser.isLogged = true;
+                    //currentuser.LOGIN = log.ToString();
                     
                 }
                 else
                 {
-                    currentuser.isLogged = false;
+                    Response.Cookies.Append("login", "");
+                    //currentuser.isLogged = false;
                 }
             }
             catch
             {
-                currentuser.isLogged = false;
+                Response.Cookies.Append("login", "");
+                //currentuser.isLogged = false;
             }
-            return View("~/Views/Account/Account.cshtml");
+            //return View("~/Views/Account/Account.cshtml");
+            return Redirect("~/Account/Index");
         }
 
 
@@ -81,24 +85,35 @@ namespace Kursach.Controllers
 
         [HttpPost]
         [Route("~/[controller]/UnLikeRecept")]
-        public void UnLikeRecept(string id) // TODO : DELETE CREATED MEALS BY NAME
+        public IActionResult UnLikeRecept(string id) // TODO : DELETE CREATED MEALS BY NAME
         {
-            if(currentuser.isLogged == true)
+            var log = Request.Cookies["login"];
+            if(!string.IsNullOrEmpty(Request.Cookies["login"]))
             {
-                db.Users.Where(user => user.login == currentuser.LOGIN).First().RemoveRecipe(id);
+                var usersLog = db.Users.FirstOrDefault(user => user.login == log);
+                usersLog.RemoveRecipe(id, log);
+                //db.Users.Where(user => user.login == log).First().RemoveRecipe(id);
                 db.SaveChanges();
             }
-            
+            return Redirect("~/Account/Index");
+            //if(currentuser.isLogged == true)
+            //{
+            //    db.Users.Where(user => user.login == currentuser.LOGIN).First().RemoveRecipe(id);
+            //    db.SaveChanges();
+            //}
+
         }
 
 
+        
         [HttpPost]
         [Route("~/[controller]/LikeRecept")]
         public void LikeRecept(string id)
         {
-
-            //MealFull likedMeal = JsonSerializer.Deserialize<MealFull>(jsonmeal);
-            if (currentuser.isLogged == true)
+            var login = Request.Cookies["login"];
+            
+            
+            if(!string.IsNullOrEmpty(login))
             {
                 MealFull likedmeal;
                 HttpClient client = new HttpClient();
@@ -112,14 +127,31 @@ namespace Kursach.Controllers
                     var res = response.Content.ReadAsStringAsync().Result;
                     likedmeal = JsonSerializer.Deserialize<MealFull>(res);
                 }
-                db.Users.Where(user => user.login == currentuser.LOGIN)?.First()?.AddRecipe(likedmeal);
+                db.Users.Where(user => user.login == login)?.First()?.AddRecipe(likedmeal,login);
                 db.SaveChanges();
             }
-            else
-            {
-                Response.StatusCode = 403;
-                return;
-            }
+            //if (currentuser.isLogged == true)
+            //{
+            //    MealFull likedmeal;
+            //    HttpClient client = new HttpClient();
+            //    HttpRequestMessage message = new HttpRequestMessage()
+            //    {
+            //        Method = HttpMethod.Get,
+            //        RequestUri = new Uri($"https://api.spoonacular.com/recipes/{id}/information?apiKey=83c7e059495b468e87e5ea32c1215288")
+            //    };
+            //    using (var response = client.Send(message))
+            //    {
+            //        var res = response.Content.ReadAsStringAsync().Result;
+            //        likedmeal = JsonSerializer.Deserialize<MealFull>(res);
+            //    }
+            //    db.Users.Where(user => user.login == currentuser.LOGIN)?.First()?.AddRecipe(likedmeal);
+            //    db.SaveChanges();
+            //}
+            //else
+            //{
+            //    Response.StatusCode = 403;
+            //    return;
+            //}
 
         }
 
@@ -141,16 +173,19 @@ namespace Kursach.Controllers
             meal.instructions = Instructions;
 
 
-            meal.id = (readyinminutes.ToString() + name.ToString()).GetHashCode(); 
+            meal.id = (readyinminutes.ToString() + name.ToString()).GetHashCode();
 
             //meal.ingredients = ingredients.Split(',').ToList();
 
-            if (currentuser.isLogged == true)
+
+            var login = Request.Cookies["login"];
+
+            if (!string.IsNullOrEmpty(login))
             {
                 try
                 {
-                    db.Users.Where(user => user.login == currentuser.LOGIN)?.First()?.AddRecipe(meal);
-                    db.SaveChanges();
+                    var usersLog = db.Users.FirstOrDefault(user => user.login == login);
+                    usersLog.AddRecipe(meal, login);
                 } catch
                 {
                     

@@ -22,9 +22,10 @@ namespace Kursach.Controllers
         [Route("[controller]/Logout")]
         public IActionResult Logout()
         {
+            Response.Cookies.Delete("login");
 
-            currentuser.isLogged = false;
-            currentuser.LOGIN = null;
+            //currentuser.isLogged = false;
+            //currentuser.LOGIN = null;
             return Redirect("~/");
 
         }

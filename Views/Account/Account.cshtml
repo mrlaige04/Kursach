@@ -5,14 +5,14 @@
 @model User; 
 @{
     ApplicationContext db = new();
-
+    var login = Context.Request.Cookies["login"];
 }
 @{
     Layout = "~/Views/_Layout.cshtml";
 }
 
-
-@if(currentuser.isLogged == false) {
+@if(string.IsNullOrEmpty(login)) {
+@*@if(currentuser.isLogged == false) {*@
 
 <!DOCTYPE html>
 <html lang="en">
@@ -122,8 +122,8 @@
             </form>
         </div>
 
-        @if(db?.Users.Where(user => user.login == currentuser.LOGIN)?.First()?.recipes != null) {
-            @foreach (var meal in JsonSerializer.Deserialize<List<MealFull>>(db.Users.Where(user=>user.login == currentuser.LOGIN).First().recipes)) @*==currentuser.LOGIN*@
+        @if(db?.Users.Where(user => user.login == login)?.First()?.recipes != null) {
+            @foreach (var meal in JsonSerializer.Deserialize<List<MealFull>>(db.Users.Where(user=>user.login == login).First().recipes)) @*==currentuser.LOGIN*@
             {
                 <div class="meal">
                         <div class="maininfo">
