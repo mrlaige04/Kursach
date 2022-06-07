@@ -6,17 +6,15 @@
 @{
     ApplicationContext db = new();
     var login = Context.Request.Cookies["login"];
+    User user = db.Users.FirstOrDefault(user => user.login == login);
 }
 @{
     Layout = "~/Views/_Layout.cshtml";
 }
+<!DOCTYPE html>
 
 @if(string.IsNullOrEmpty(login)) {
-@*@if(currentuser.isLogged == false) {*@
-
-<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -24,9 +22,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="~/style/account.css">
     <script src="../wwwroot/js/signer.js"></script>
-
 </head>
-
 <body>
 
     <div class="signer">
@@ -46,8 +42,6 @@
                     } }
                 </form>
             </div>
-
-
         </div>
     </div>
     <script>
@@ -88,27 +82,19 @@
             document.getElementById("failsignup").innerText = "";
         }
     </script>
-
 </body>
-
 </html>
+
 } else {
-
-
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
     <link rel="stylesheet" href="~/style/mymeals.css">
     <title>MyRecipes</title>
 </head>
-
 <body>
-
-</body>
 <div class="mycontent">
         <button id="createnewmealbutton" onclick="showHideCreate()">Create New</button>
 
@@ -121,9 +107,9 @@
                 <button type="submit">Create</button>
             </form>
         </div>
-
-        @if(db?.Users.Where(user => user.login == login)?.First()?.recipes != null) {
-            @foreach (var meal in JsonSerializer.Deserialize<List<MealFull>>(db.Users.Where(user=>user.login == login).First().recipes)) @*==currentuser.LOGIN*@
+            
+        @if(user?.recipes != null) {
+            @foreach (var meal in JsonSerializer.Deserialize<List<MealFull>>(user?.recipes)) 
             {
                 <div class="meal">
                         <div class="maininfo">
@@ -145,14 +131,11 @@
                                 }
 
                                 <p><b>Can be cooked in</b> :@String.Format(@meal.readyInMinutes+" minutes") </p>
-
                                 <a target="_blank" href="@meal.sourceUrl"><button>Source</button></a>
-
                                 <div class="instructions">
                                         @meal.instructions
                                 </div>
-
-                                
+                               
                                 @if (meal.extendedIngredients != null)
                                 {
                                     <div class="ingredients">
@@ -196,16 +179,11 @@
 
                         <img style="cursor:pointer; margin-top:30px;" 
                         src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg/1024px-Edit_icon_%28the_Noun_Project_30184%29.svg.png" width="65" height="65" 
-                        onclick="editrecipe(@meal.id)">
-
-
-                        
-                    </div>
-                
-         
+                        onclick="editrecipe(@meal.id)">                     
+                    </div>         
             }
         }
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
             
             function unlikerecept(id) {     
@@ -233,11 +211,10 @@
             }
 
             function editrecipe(id) {
-                location.href = `../User/GetEditRecipePage?id=${id}`;
-                
+                location.href = `../User/GetEditRecipePage?id=${id}`;               
             }
         </script>
 </div>
-
+</body>
 </html>
 }

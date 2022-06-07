@@ -13,20 +13,14 @@ namespace Kursach.Controllers
     {
         public ApplicationContext db = new();
 
-
-        
-
         [HttpPost]
         public IActionResult Index()
         {
             var log = Request.Form["login"].ToString();
             var pas = Request.Form["password"].ToString();
             User us1 = new User(log, pas,db);
-            
-
             try
             {
-
                 if (db.Users.Where(user => user.login == log).Count() > 0)
                 {
                     throw new Exception();
@@ -36,15 +30,11 @@ namespace Kursach.Controllers
                 ViewData["successfullsignup"] = true;
             }
             catch
-            {
-                
+            {               
                 ViewData["successfullsignup"] = false;
             }
             return View("~/Views/Account/Account.cshtml");
-
         }
-
-
 
         [HttpPost]
         [Route("~/User/Logining")]
@@ -52,67 +42,43 @@ namespace Kursach.Controllers
         {
             var log = Request.Form["login"].ToString();
             var pas = Request.Form["password"].ToString();
-
             try
             {
                 if (db.Users.Where(user => (user.login == log))?.Where(user => user.password == pas).Count() > 0)
                 {
                     Response.Cookies.Append("login", log);
-                    //currentuser.isLogged = true;
-                    //currentuser.LOGIN = log.ToString();
-                    
                 }
                 else
                 {
                     Response.Cookies.Append("login", "");
-                    //currentuser.isLogged = false;
                 }
             }
             catch
             {
                 Response.Cookies.Append("login", "");
-                //currentuser.isLogged = false;
             }
-            //return View("~/Views/Account/Account.cshtml");
             return Redirect("~/Account/Index");
         }
 
-
-
-
-        
-
-
         [HttpPost]
         [Route("~/[controller]/UnLikeRecept")]
-        public IActionResult UnLikeRecept(string id) // TODO : DELETE CREATED MEALS BY NAME
+        public IActionResult UnLikeRecept(string id) 
         {
             var log = Request.Cookies["login"];
             if(!string.IsNullOrEmpty(Request.Cookies["login"]))
             {
                 var usersLog = db.Users.FirstOrDefault(user => user.login == log);
                 usersLog.RemoveRecipe(id, log);
-                //db.Users.Where(user => user.login == log).First().RemoveRecipe(id);
                 db.SaveChanges();
             }
             return Redirect("~/Account/Index");
-            //if(currentuser.isLogged == true)
-            //{
-            //    db.Users.Where(user => user.login == currentuser.LOGIN).First().RemoveRecipe(id);
-            //    db.SaveChanges();
-            //}
-
         }
-
-
-        
+      
         [HttpPost]
         [Route("~/[controller]/LikeRecept")]
         public void LikeRecept(string id)
         {
-            var login = Request.Cookies["login"];
-            
-            
+            var login = Request.Cookies["login"];          
             if(!string.IsNullOrEmpty(login))
             {
                 MealFull likedmeal;
@@ -130,29 +96,6 @@ namespace Kursach.Controllers
                 db.Users.Where(user => user.login == login)?.First()?.AddRecipe(likedmeal,login);
                 db.SaveChanges();
             }
-            //if (currentuser.isLogged == true)
-            //{
-            //    MealFull likedmeal;
-            //    HttpClient client = new HttpClient();
-            //    HttpRequestMessage message = new HttpRequestMessage()
-            //    {
-            //        Method = HttpMethod.Get,
-            //        RequestUri = new Uri($"https://api.spoonacular.com/recipes/{id}/information?apiKey=83c7e059495b468e87e5ea32c1215288")
-            //    };
-            //    using (var response = client.Send(message))
-            //    {
-            //        var res = response.Content.ReadAsStringAsync().Result;
-            //        likedmeal = JsonSerializer.Deserialize<MealFull>(res);
-            //    }
-            //    db.Users.Where(user => user.login == currentuser.LOGIN)?.First()?.AddRecipe(likedmeal);
-            //    db.SaveChanges();
-            //}
-            //else
-            //{
-            //    Response.StatusCode = 403;
-            //    return;
-            //}
-
         }
 
 
@@ -162,8 +105,7 @@ namespace Kursach.Controllers
         {
             var img = Request.Form["mealimg"].ToString();
             var name = Request.Form["mealname"].ToString();
-            var readyinminutes = Request.Form["readyInMinutes"].ToString();
-            
+            var readyinminutes = Request.Form["readyInMinutes"].ToString();           
             var Instructions = Request.Form["mealinstructions"].ToString();
 
             MealFull meal = new();
@@ -172,12 +114,7 @@ namespace Kursach.Controllers
             meal.readyInMinutes = int.Parse(readyinminutes);
             meal.instructions = Instructions;
 
-
-            meal.id = (readyinminutes.ToString() + name.ToString()).GetHashCode();
-
-            //meal.ingredients = ingredients.Split(',').ToList();
-
-
+            meal.id = (readyinminutes.ToString() + name.ToString()).GetHashCode();           
             var login = Request.Cookies["login"];
 
             if (!string.IsNullOrEmpty(login))
@@ -186,10 +123,7 @@ namespace Kursach.Controllers
                 {
                     var usersLog = db.Users.FirstOrDefault(user => user.login == login);
                     usersLog.AddRecipe(meal, login);
-                } catch
-                {
-                    
-                }
+                } catch {}
             }
             else
             {
@@ -198,9 +132,6 @@ namespace Kursach.Controllers
             }
             Response.Redirect("../Account/Index");
         }
-
-
-
 
         [HttpGet]
         [Route("~/[controller]/GetEditRecipePage")]
@@ -217,14 +148,12 @@ namespace Kursach.Controllers
             {
                 Response.StatusCode = 403;
                 return Redirect("~/Account/Index");
-            }
-            
+            }           
         }
-
 
         [HttpPost]
         [Route("~/[controller]/EditRecipe")]
-        public IActionResult EditRecipe() // TODO: EDIT RECIPE
+        public IActionResult EditRecipe() 
         {
             var img = Request.Form["imagesrc"].ToString();
             var title = Request.Form["title"].ToString();
@@ -246,12 +175,8 @@ namespace Kursach.Controllers
                 curuser.listrecipes = JsonSerializer.Deserialize<List<MealFull>>(curuser.recipes);
                 
                 curuser.RemoveRecipe(id, login);
-                curuser.AddRecipe(mealFull, login);
-                
-                
-                
-            }
-            
+                curuser.AddRecipe(mealFull, login);            
+            }            
             return Redirect("~/Account/Index");
         }
     }

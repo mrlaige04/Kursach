@@ -14,14 +14,6 @@ namespace Kursach.Controllers
         public IActionResult Hello()
         {
             return View("~/Views/Hello/Hello.cshtml");
-        }
-
-
-        [HttpGet]
-        [Route("/APIDOCS")]
-        public IActionResult APIDOCS()
-        {
-            return View("~/Views/APIDOCS.cshtml");
-        }
+        }      
     }
 }

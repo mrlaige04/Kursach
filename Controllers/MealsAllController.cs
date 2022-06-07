@@ -17,11 +17,7 @@ namespace Kursach.Controllers
         HttpClient client = new HttpClient();
         HttpRequestMessage message;
         HttpResponseMessage response;
-        string body = "";
-
-
-
-
+        
         /// <summary>
         /// Random Meal
         /// </summary>
@@ -34,29 +30,18 @@ namespace Kursach.Controllers
                 Method = HttpMethod.Get,
                 RequestUri = new Uri("https://api.spoonacular.com/recipes/random?apiKey=83c7e059495b468e87e5ea32c1215288")
             };
-
             using (response = client.Send(message))
             {
                 var body = response.Content.ReadAsStringAsync().Result;
                 RandomMeal sresult = JsonSerializer.Deserialize<RandomMeal>(body);
 
-                try { sresult.recipes.First().menuItems = WhereServing(sresult?.recipes.First().title); }catch { }
+                try { 
+                    sresult.recipes.First().menuItems = WhereServing(sresult?.recipes.First().title); 
+                } catch { }
                 return View("Meal", sresult?.recipes?.ToList());
             }
 
         }
-
-
-
-
-        
-
-
-
-
-
-        
-        // TODO: IMPROVE SEARCH(NAME, INGREDIENT, ID)
 
         /// <summary>
         /// Search by Name
@@ -83,29 +68,11 @@ namespace Kursach.Controllers
                     ids.Add(item.id.ToString());
                 }
 
-                mealsfull = ReturnMealsById(ids).Result;
-                
+                mealsfull = ReturnMealsById(ids).Result;                
                 return View("Meal", mealsfull);
             }
         }
-
-
-
-        
-
-
-
-        
-
-
-
-
-
-
-
-
-
-        
+    
         private MenuItems WhereServing(string name)
         {
             message = new HttpRequestMessage()
@@ -120,10 +87,6 @@ namespace Kursach.Controllers
                 return body;
             }
         }
-
-
-
-
 
         //Parse Meals by ID
         private async Task<List<MealFull>> ReturnMealsById(List<string> id)
@@ -153,7 +116,6 @@ namespace Kursach.Controllers
                 }
                 catch { }
                 return meals;
-
             });
             #nullable restore
         }

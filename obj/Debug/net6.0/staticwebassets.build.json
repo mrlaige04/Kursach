@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Jzypl1fwgChQHlz6spTVavvARO0eidcQu+ndeWotrok=",
+  "Hash": "nj02WEX2Phzl3s02bsvTeDLG2MLUUSo21A/n+rMUXDU=",
   "Source": "Kursach",
   "BasePath": "_content/Kursach",
   "Mode": "Default",
@@ -32,6 +32,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\style\\account.css"
+    },
+    {
+      "Identity": "E:\\КПИ УЧЕБА\\1 курс 2 семестр\\Proga\\Kursova\\API\\Kursach\\wwwroot\\style\\editpage.css",
+      "SourceId": "Kursach",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\КПИ УЧЕБА\\1 курс 2 семестр\\Proga\\Kursova\\API\\Kursach\\wwwroot\\",
+      "BasePath": "_content/Kursach",
+      "RelativePath": "style/editpage.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\style\\editpage.css"
     },
     {
       "Identity": "E:\\КПИ УЧЕБА\\1 курс 2 семестр\\Proga\\Kursova\\API\\Kursach\\wwwroot\\style\\hello.css",
