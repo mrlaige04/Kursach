@@ -1,71 +1,145 @@
-﻿@{
+﻿<!DOCTYPE html>
+<html lang="en">
+<!-- Basic -->
+@{
     Layout = "~/Views/_Layout.cshtml";
 }
-
-
-<!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="~/style/hello.css">
+    @section head {
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <!-- Mobile Metas -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Site Metas -->
+        <title>Recipe Book</title>
+        <meta name="keywords" content="">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <!-- Site Icons -->
+        <link rel="shortcut icon" href="~/images/hello.ico" type="image/x-icon">
+    
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="~/css/bootstrap.min.css">
+        <!-- Site CSS -->
+        <link rel="stylesheet" href="~/css/style.css">
+        <!-- Responsive CSS -->
+        <link rel="stylesheet" href="~/css/responsive.css">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="~/css/custom.css">
+    }
 </head>
 <body>
-    <main>
-        
-        <div class="first">
-            <div class="leftfir">
-                <h1>Welcome to your own Recipe Book!</h1>
-                <p>With this service you can manage your meals book just in WebSite!</p>
-            </div>
+   <!-- Start slides -->
+    <div id="slides" class="cover-slides">
+        <ul class="slides-container">
+            <li class="text-center">
+                <img src="images/slider-01.jpg" alt="">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h1 class="m-b-20"><strong>Welcome To <br> Your Own Recipe Book</strong></h1>
+                            <p class="m-b-40">With this site you can forget about paper books!</p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="text-center">
+                <img src="images/slider-02.jpg" alt="">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h1 class="m-b-20"><strong>Welcome To <br> Your Own Recipe Book</strong></h1>
+                            <p class="m-b-40">With this site you can forget about paper books!</p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="text-center">
+                <img src="images/slider-03.jpg" alt="">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h1 class="m-b-20"><strong>Welcome To <br> Your Own Recipe Book</strong></h1>
+                            <p class="m-b-40">With this site you can forget about paper books!</p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
 
-            <div class="verticalLine"></div>
+    </div>
+    <!-- End slides -->
 
-            <div class="right">
-                <img width="160" height="160" src="https://cdn-icons-png.flaticon.com/512/2937/2937607.png"/>
+    <!-- Start About -->
+    <div class="about-section-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <img src="https://www.legami.com/dw/image/v2/BDSQ_PRD/on/demandware.static/-/Sites-legami-master-catalog/default/dw9f7b7bec/images_legami/zoom/REC0002_1.jpg?sw=800&sh=800" alt="" class="img-fluid">
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 text-center">
+                    <div class="inner-column">
+                        <h1>Welcome To <span>Recipe book!</span></h1>
+                        <h4>Little Explanation</h4>
+                        <p>Have you ever thought that you can store recipes right on your computer? No need to have a separate book to write down the recipes of your favorite dishes! </p>
+                    </div>
+                </div>
             </div>
         </div>
-        
-        <div class="second">
-            <h1 style="text-align:center;font-size:60px;">Actions that you can do here</h1>
-            <div class="containersecond">
-                <div class="adding">
-                    <div class="left">
-                        <h2>Creating your own recipe book quickly!</h2>
-                    </div>
-                    <div class="right">
-                        <img width="160" height="160" src="https://cdn-icons-png.flaticon.com/512/3658/3658773.png" alt="">
-                    </div>
-                </div>
-                <div class="editing">
-                    <div class="left">
-                        <img width="160" height="160" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg/1024px-Edit_icon_%28the_Noun_Project_30184%29.svg.png" alt="">
-                    </div>
-                    <div class="right">
-                        <h2>Editing your existing recipes!</h2>
+    </div>
+    <!-- End About -->
+
+    <!-- Start Gallery -->
+    <div class="gallery-box">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="heading-title text-center">
+                        <h2>Gallery</h2>
+                        <p>Some recipes you can find</p>
                     </div>
                 </div>
-                <div class="deleting">
-                    <div class="left">
-                        <h2>Deleting your recipes!</h2>
+            </div>
+            <div class="tz-gallery">
+                <div class="row">
+                    <div class="col-sm-12 col-md-4 col-lg-4">
+                        <a class="lightbox" href="https://media-cdn.tripadvisor.com/media/photo-s/18/7d/cb/8b/just-a-little-spread.jpg">
+                            <img class="img-fluid" src="https://media-cdn.tripadvisor.com/media/photo-s/18/7d/cb/8b/just-a-little-spread.jpg" alt="Gallery Images">
+                        </a>
                     </div>
-                    <div class="right">
-                        <img width="160" height="160" src="https://cdn-icons-png.flaticon.com/512/2891/2891491.png" alt="">
+                    <div class="col-sm-6 col-md-4 col-lg-4">
+                        <a class="lightbox" href="https://www.oprah.com/g/image-resizer?width=670&link=https://static.oprah.com/images/201302/orig/201302-orig-beautiful-chicken-600x411.jpg">
+                            <img class="img-fluid" src="https://www.oprah.com/g/image-resizer?width=670&link=https://static.oprah.com/images/201302/orig/201302-orig-beautiful-chicken-600x411.jpg" alt="Gallery Images">
+                        </a>
                     </div>
-                </div>
-                <div class="searching">
-                    <div class="left">
-                        <img width="160" height="160" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Search_Icon.svg/1024px-Search_Icon.svg.png" alt="">
+                    <div class="col-sm-6 col-md-4 col-lg-4">
+                        <a class="lightbox" href="https://www.oprah.com/g/image-resizer?width=670&link=https://static.oprah.com/images/201207/orig/201207-orig-weeknight-chicken-600x411.jpg">
+                            <img class="img-fluid" src="https://www.oprah.com/g/image-resizer?width=670&link=https://static.oprah.com/images/201207/orig/201207-orig-weeknight-chicken-600x411.jpg" alt="Gallery Images">
+                        </a>
                     </div>
-                    <div class="right">
-                        <h2>Search and add recipe!</h2>
+                    <div class="col-sm-12 col-md-4 col-lg-4">
+                        <a class="lightbox" href="https://nahleh-atd.com/wp-content/uploads/2019/07/recipe-4.jpg">
+                            <img class="img-fluid" src="https://nahleh-atd.com/wp-content/uploads/2019/07/recipe-4.jpg" alt="Gallery Images">
+                        </a>
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-lg-4">
+                        <a class="lightbox" href="https://loveincorporated.blob.core.windows.net/contentimages/gallery/5042cb85-5a72-44ad-aa35-fd7893ff9f36-11%20sliceofpai.jpg">
+                            <img class="img-fluid" src="https://loveincorporated.blob.core.windows.net/contentimages/gallery/5042cb85-5a72-44ad-aa35-fd7893ff9f36-11%20sliceofpai.jpg" alt="Gallery Images">
+                        </a>
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-lg-4">
+                        <a class="lightbox" href="https://loveincorporated.blob.core.windows.net/contentimages/gallery/b5e5f392-762b-4fee-8bc7-2aaa76ed310a-6%20foodwithmichel.jpg">
+                            <img class="img-fluid" src="https://loveincorporated.blob.core.windows.net/contentimages/gallery/b5e5f392-762b-4fee-8bc7-2aaa76ed310a-6%20foodwithmichel.jpg" alt="Gallery Images">
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
-    
+    </div>
+    <!-- End Gallery -->   
 </body>
+
 </html>

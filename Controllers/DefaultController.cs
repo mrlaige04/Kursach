@@ -2,8 +2,6 @@
 
 namespace Kursach.Controllers
 {
-
-
     /// <summary>
     /// Welcome Page
     /// </summary>

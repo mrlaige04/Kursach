@@ -1,12 +1,11 @@
-﻿
-using Kursach.Models.Spoonacular;
+﻿using Kursach.Models.Spoonacular;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 namespace Kursach.Models.User
 {
-    public class User
+    public class User : IDisposable
     {
         [Key]
         public string hash { get; set; }
@@ -17,12 +16,9 @@ namespace Kursach.Models.User
 
         public string recipes { get; set; }
 
-
         private ApplicationContext db;
-
         
         public List<MealFull> listrecipes = new List<MealFull>();
-
 
         public User(string login, string password, ApplicationContext db) : this(db)
         {
@@ -36,7 +32,6 @@ namespace Kursach.Models.User
             this.db = db;
             reciper();
         }
-
 
         private string Hasher()
         {
@@ -97,7 +92,6 @@ namespace Kursach.Models.User
             db.SaveChanges();
         }
 
-
         public override string ToString()
         {
             return "Login: " + login + " Password: " + password + " Recipes: " + recipes;
@@ -107,6 +101,11 @@ namespace Kursach.Models.User
         {
             if (listrecipes == null) listrecipes = new();
             recipes = JsonSerializer.Serialize(listrecipes.ToArray());
+        }
+
+        public void Dispose()
+        {
+            reciper();
         }
     }
 }

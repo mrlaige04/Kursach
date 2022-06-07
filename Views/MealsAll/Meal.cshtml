@@ -1,139 +1,124 @@
-﻿
-
-@using System.Text.Json
+﻿@using System.Text.Json
 @using Kursach.Models.Spoonacular
 @model List<MealFull>;
 @{
     Layout = "~/Views/_Layout.cshtml";
 }
 
-
 <!doctype html>
 <html>
-    <head>   
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-        <title>Searching</title>
-        <link rel="stylesheet" href="~/style/meal.css">
-        
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <head>         
+        @section head {
+            <title>Search</title>
+            <link rel="icon" href="~/images/search.ico"/>
+        }
     </head>
-
     <body>
-        <div class="content">
-            <div class="leftsidesearch">
-                <div class="containers">
-
-                    
-
-                    <div class="searchbyname">
-                        
-                        <form method="get" action="~/MealsAll/MealByName?name={name}">
-                            <h3>ByName</h3>
-                            <input type="text" name="name" id="name" required>
-                            <button type="submit" >Search</button>
-                        </form>
+        <!-- Start All Pages -->
+        <div class="all-page-title page-breadcrumb">
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1>Search</h1>
                     </div>
-
-                    
-                    
-                    
                 </div>
             </div>
-            <div class="verticalline"></div>
-            <div class="rightsidesearch">
-            @if (Model != null)
-            {
-                @foreach (var meal in Model)
-                {
-                    <div class="meal">
-                        <div class="maininfo">
-                            <img src="@meal.image" width="90" height="90" alt="mealimage">
-                            <div class="mealname">
-                                <p >@meal.title</p>
-                                <p>Id: @meal.id</p>
-                            </div>
+        </div>
+        <!-- End All Pages -->
+
+        <!-- Start blog details -->
+        <div class="blog-box">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="heading-title text-center">
+                            <h2>Search</h2>
+                            <p>Let's find some recipes</p>
                         </div>
-                        <details>
-                            <summary>More info</summary>
-                            <div class="additionalinfo">
-                                <p><b>Types</b>: @foreach (var type in meal.dishTypes)
-                                    {
-                                        @String.Format(type+" ")
-                                    }</p>
-
-                                <p><b>Can be cooked in</b> :@String.Format(@meal.readyInMinutes+" minutes") </p>
-
-                                <a target="_blank" href="@meal.sourceUrl"><button>Source</button></a>
-
-                                <div class="instructions">
-                                    @meal.instructions
-                                </div>
-
-
-                                <div class="ingredients">
-                                    <b>Ingredients:</b>
-                                    @foreach (var ingr in @meal.extendedIngredients)
-                                    {
-                                        <div class="ingredient">
-                                            <p>Name: @ingr.name</p>
-                                            <p>Id: @ingr.id</p>  
-                                            <div class="measures">
-                                                Measure:
-                                                <p>Amount: @ingr.measures.metric.amount @ingr.measures.metric.unitLong</p> 
-                                            </div>
-                                        </div>
-                                    }
-                                </div>
-
-                                @if (meal.menuItems != null && meal.menuItems.menuItems != null)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-8 col-lg-8 col-12">
+                        <div class="blog-inner-details-page">
+                            <!-- Meal -->
+                            @if (Model != null)
+                            {
+                                @foreach (var meal in Model)
                                 {
-                                    <div class="restaurants">
-                                        <b>Restaurants:</b>
-                                        @foreach (var rest in meal.menuItems.menuItems)
-                                        {
-                                            <div class="restik">
-                                                <img src="@rest.image" width="40" height="40">
-                                                <div class="restname">
-                                                    <p>@rest.title</p>
-                                                    <p><b>Restaurant Chain</b>:@rest.restaurantChain</p> 
-                                                    <a target="_blank" href="https://google.com/search?q=@rest.restaurantChain">Find restaurant in Google!</a>
-                                                </div>
-                                            </div>
-                                        }
+                                    <div class="blog-inner-box">
+                                        <div class="side-blog-img">
+                                            <img class="img-fluid" src="@meal.image" alt="">
+                                        </div>
+                                        <div class="inner-blog-detail details-page">
+                                            <h3>@meal.title Id: @meal.id</h3>
+                                            <details>
+                                                <summary>More info</summary>
+                                                <p>Dish types</p>
+                                                <p>Can be cooked in @meal.readyInMinutes minutes</p>
+                                                <a href="@meal.sourceUrl" class="bn3637 bn36">Source</a>
+                                                <p><b>Instructions:</b> <br />@meal.instructions</p>
+                                                <hr>
+                                                @if (meal.extendedIngredients != null)
+                                                {
+                                                    <div class="ingredients">
+                                                        <b>Ingredients:</b>
+                                                        @foreach (var item in meal.extendedIngredients)
+                                                        {
+                                                            <div class="ingr">
+                                                                <p>Name: @item.name</p>
+                                                                <p>Amout: @item.measures.metric.amount @item.measures.metric.unitLong</p>                                                       
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                }
+                                                <hr>
+                                                @if (meal.menuItems != null || meal.menuItems.menuItems != null)
+                                                {
+                                                    <div class="resturants">
+                                                        <b>Restaurants:</b>
+                                                        @foreach (var menuitem in meal.menuItems.menuItems)
+                                                        {
+                                                            <p>Restaurant: @menuitem.restaurantChain</p>
+                                                        }
+                                                    </div>
+                                                }
+                                            </details>
+                                            <span style="cursor:pointer;" onclick="likerecept(@meal.id)"><i class="fa fa-heart" style="font-size:24px;margin-top:10px;"></i></span>
+                                        </div>
+                                        <hr>
                                     </div>
                                 }
-                            </div>
-                        </details>
-
-                        <img style="cursor:pointer; margin-top:20px;" 
-                        src="https://cdn-icons-png.flaticon.com/512/2107/2107956.png" width="80" height="80" 
-                        onclick="likerecept(@meal.id)">
-
+                            }
+                        </div>
                     </div>
 
-                }
-            }
-
+                    <!-- Search-->
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-8 col-12 blog-sidebar">
+                        <div class="right-side-blog">
+                            <h3>Search</h3>
+                            <div class="blog-search-form">
+                                <form method="get" action="~/MealsAll/MealByName?name={name}">
+                                    <input placeholder="Search recipe" name="name" type="text">
+                                    <button class="search-btn" type="submit">
+									    <i class="fa fa-search" aria-hidden="true"></i>
+								    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        
+        <!-- End details -->
+       
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script>
-            
+        <script>        
             function likerecept(id) {                   
                  $.ajax({
                  type: "POST",
                  url: `../User/LikeRecept?id=${id}`                
              });       
-            }
-
-            
+            }        
         </script>
     </body>
 </html>
-
-
-
-

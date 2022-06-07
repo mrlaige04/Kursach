@@ -11,20 +11,22 @@
 @{
     Layout = "~/Views/_Layout.cshtml";
 }
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 @if(string.IsNullOrEmpty(login)) {
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="~/style/account.css">
-    <script src="../wwwroot/js/signer.js"></script>
+    @section head {
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Account</title>
+        <link rel="stylesheet" href="~/style/account.css">
+        <link rel="shortcut icon" type="image/x-icon" href="~/images/account.ico" /> 
+        <script src="../wwwroot/js/signer.js"></script>
+    }
 </head>
 <body>
-
     <div class="signer">
         <div class="wrapper fadeInDown">
             <div class="formContent ">
@@ -88,112 +90,108 @@
 } else {
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
-    <link rel="stylesheet" href="~/style/mymeals.css">
-    <title>MyRecipes</title>
+    @section head {
+        <link rel="stylesheet" href="~/style/account.css">
+        <link rel="icon" href="~/images/account.ico"/>
+        <title>MyRecipes</title>
+    }
 </head>
 <body>
-<div class="mycontent">
-        <button id="createnewmealbutton" onclick="showHideCreate()">Create New</button>
+<div class="mycontent">       
+        <!-- Start All Pages -->
+        <div class="all-page-title page-breadcrumb">
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1>Your recipes</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End All Pages -->
 
+        <button id="createnewmealbutton" onclick="showHideCreate()">Create New</button>
         <div class="receptcreator">
             <form method="post" action="../User/CreateNew">
                 Img source: <input type="text" name="mealimg" required> <br>
                 Name: <input type="text" name="mealname" required><br>              
                 Ready In Minutes: <input type="number" name="readyInMinutes" required><br>
                 Instructions: <input type="area" name="mealinstructions" required><br>
+                Dishtypes: <input type="text" name="dishtypes" required><br>
+                Ingredients: <input type="text" name="ingredients" required><br>
                 <button type="submit">Create</button>
             </form>
-        </div>
-            
+        </div>            
+        <hr>
+
         @if(user?.recipes != null) {
             @foreach (var meal in JsonSerializer.Deserialize<List<MealFull>>(user?.recipes)) 
             {
-                <div class="meal">
-                        <div class="maininfo">
-                            <img src="@meal.image" width="90" height="90" alt="mealimage">
-                            <div class="mealname">
-                                <p >@meal.title</p>
-                                <p>Id: @meal.id</p>
-                            </div>
-                        </div>
+                <div class="blog-inner-box">
+                    <div class="side-blog-img">
+                        <img class="img-fluid" src="@meal.image" width="556" height="330" alt="">
+                    </div>
+                    <div class="inner-blog-detail details-page">
+                        <h3>@meal.title Id: @meal.id</h3>
                         <details>
                             <summary>More info</summary>
-                            <div class="additionalinfo">
-                                @if (meal.dishTypes != null)
+                            @{
+                                string dishtypes = "";
+                                if (meal.dishTypes != null)
                                 {
-                                    <p><b>Types</b>: @foreach (var type in meal.dishTypes)
-                                        {
-                                            @String.Format(type+" ")
-                                        }</p>
+                                    foreach (var dtype in meal.dishTypes)
+                                    {
+                                        dishtypes += dtype;
+                                        dishtypes += " ";
+                                    }
                                 }
-
-                                <p><b>Can be cooked in</b> :@String.Format(@meal.readyInMinutes+" minutes") </p>
-                                <a target="_blank" href="@meal.sourceUrl"><button>Source</button></a>
-                                <div class="instructions">
-                                        @meal.instructions
+                            }
+                            <p>@dishtypes</p>
+                            <p>Can be cooked in @meal.readyInMinutes minutes</p>
+                            <a href="@meal.sourceUrl" class="bn3637 bn36">Source</a>
+                            <p><b>Instructions:</b> <br />@meal.instructions</p>
+                            <hr>
+                            @if (meal.extendedIngredients != null)
+                            {
+                                <div class="ingredients">
+                                    <b>Ingredients:</b>
+                                    @foreach (var item in meal.extendedIngredients)
+                                    {
+                                        <div class="ingr">
+                                            <p>Name: @item.name</p>
+                                            <p>Amout: @item.measures?.metric?.amount @item.measures?.metric?.unitLong</p>                                                       
+                                        </div>
+                                    }
                                 </div>
-                               
-                                @if (meal.extendedIngredients != null)
-                                {
-                                    <div class="ingredients">
-                                        <b>Ingredients:</b>
-                                        @foreach (var ingr in @meal.extendedIngredients)
-                                        {
-                                            <div class="ingredient">
-                                                <p>Name: @ingr.name</p>
-                                                <p>Id: @ingr.id</p>  
-                                                <div class="measures">
-                                                    Measure:
-                                                    <p>Amount: @ingr.measures.metric.amount @ingr.measures.metric.unitLong</p> 
-                                                </div>
-                                            </div>
-                                        }
-                                    </div>
-                                }
-
-                                @if (meal.menuItems != null)
-                                {
-                                    <div class="restaurants">
-                                        <b>Restaurants:</b>
-                                        @foreach (var rest in meal.menuItems?.menuItems)
-                                        {
-                                            <div class="restik">
-                                                <img src="@rest.image" width="40" height="40">
-                                                <div class="restname">
-                                                    <p>@rest.title</p>
-                                                    <p><b>Restaurant Chain:</b> @rest.restaurantChain</p>                                                   
-                                                </div>
-                                            </div>
-                                        }
-                                    </div>
-                                }
-                        </div>
+                            }
+                            <hr>
+                            @if (meal.menuItems != null ) //&& meal.menuItems.menuItems != null
+                            {
+                                <div class="resturants">
+                                    <b>Restaurants:</b>
+                                    @foreach (var menuitem in meal.menuItems.menuItems)
+                                    {
+                                        <p>Restaurant: @menuitem.restaurantChain</p>
+                                    }
+                                </div>
+                            }
                         </details>
-
-                        <img style="cursor:pointer; margin-top:30px;" 
-                        src="https://cdn-icons-png.flaticon.com/512/2891/2891491.png" width="65" height="65" 
-                        onclick="unlikerecept(@meal.id)">
-
-                        <img style="cursor:pointer; margin-top:30px;" 
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg/1024px-Edit_icon_%28the_Noun_Project_30184%29.svg.png" width="65" height="65" 
-                        onclick="editrecipe(@meal.id)">                     
-                    </div>         
+                        <span style="cursor:pointer;" onclick="unlikerecept(@meal.id)"><img src="https://cdn-icons-png.flaticon.com/512/2891/2891491.png" style="width:24px;height:24px;margin-top:10px;"></span>
+                        <span style="cursor:pointer;" onclick="editrecipe(@meal.id)"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg/1024px-Edit_icon_%28the_Noun_Project_30184%29.svg.png" style="width:24px;height:24px;margin-top:10px;"></span>
+                    </div>
+                    <hr>
+                </div>  
             }
         }
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script>
-            
+        <script>           
             function unlikerecept(id) {     
                  $.ajax({
                  type: "POST",
                  url: `../User/UnLikeRecept?id=${id}`,
                  success: function() {
                      location.reload();
-                 }
-                
+                 }               
                 });
             }
             function create() {

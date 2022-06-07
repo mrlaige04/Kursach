@@ -4,10 +4,7 @@
 
 .signer {
     padding: 30px;
-}
-
-html {
-    background-color: #56baed;
+    background: url("../images/img-08.jpg");
 }
 
 body {
@@ -15,7 +12,6 @@ body {
 }
 
 a {
-    color: #92badd;
     display: inline-block;
     text-decoration: none;
     font-weight: 400;
@@ -316,4 +312,39 @@ input[type=password]:placeholder {
     font-weight: bold;
     font-family: "Poppins", sans-serif;
     text-align: center;
+}
+
+#createnewmealbutton {
+    margin: 20px;
+    border: 1px solid black;
+    cursor: pointer;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.receptcreator {
+    display: none;
+    border: 1px solid black;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px;
+}
+
+.receptcreator input {
+    padding: 20px;
+    min-width: 100%;
+    text-align: center;
+    font-size: larger;
+    background-color: rgb(251, 251, 251);
+    border: none;
+}
+
+.receptcreator button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 20px;
+    border-radius: 15px;
+    border: none;
+    cursor: pointer;
+    font-size: larger;
 }

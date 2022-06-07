@@ -1,8 +1,6 @@
-﻿
-using Kursach.Models.Spoonacular;
+﻿using Kursach.Models.Spoonacular;
 using Kursach.Models.User;
 using Microsoft.AspNetCore.Mvc;
-
 using System.Text.Json;
 
 namespace Kursach.Controllers
@@ -98,7 +96,6 @@ namespace Kursach.Controllers
             }
         }
 
-
         [HttpPost]
         [Route("~/[controller]/CreateNew")]
         public void CreateNew()
@@ -107,12 +104,23 @@ namespace Kursach.Controllers
             var name = Request.Form["mealname"].ToString();
             var readyinminutes = Request.Form["readyInMinutes"].ToString();           
             var Instructions = Request.Form["mealinstructions"].ToString();
+            var dishtypes = Request.Form["dishtypes"].ToString();
+            var ingredientsString = Request.Form["ingredients"].ToString();
 
             MealFull meal = new();
             meal.image = img;
             meal.title = name;
             meal.readyInMinutes = int.Parse(readyinminutes);
             meal.instructions = Instructions;
+            meal.dishTypes = dishtypes.Split(',');
+
+            List<ingredient> ingrs = new List<ingredient>();
+            foreach (var ingr in ingredientsString.Split(','))
+            {
+                ingrs.Add(new ingredient() { name = ingr });
+            }
+
+            meal.extendedIngredients = ingrs.ToArray();
 
             meal.id = (readyinminutes.ToString() + name.ToString()).GetHashCode();           
             var login = Request.Cookies["login"];
@@ -161,22 +169,19 @@ namespace Kursach.Controllers
             var instructions = Request.Form["instructions"].ToString();
             var id = Request.Form["id"].ToString();
 
-            MealFull mealFull = new MealFull() {
-                image = img,
-                title = title,
-                readyInMinutes = int.Parse(readyin),
-                instructions = instructions,
-                id = int.Parse(id)
-            };
             if (!string.IsNullOrEmpty(Request.Cookies["login"]))
             {
                 var login = Request.Cookies["login"];
                 var curuser = db.Users.First(user => user.login == login);
-                curuser.listrecipes = JsonSerializer.Deserialize<List<MealFull>>(curuser.recipes);
-                
-                curuser.RemoveRecipe(id, login);
-                curuser.AddRecipe(mealFull, login);            
-            }            
+                curuser.listrecipes = JsonSerializer.Deserialize<List<MealFull>>(curuser?.recipes);
+                var meal = curuser.listrecipes?.FirstOrDefault(meal => meal.id.ToString() == id);
+                meal.image = img;
+                meal.title = title;
+                try { meal.readyInMinutes = int.Parse(readyin); } catch { meal.readyInMinutes = 0; }
+                meal.instructions = instructions;
+                curuser.Dispose();        
+            }
+            db.SaveChanges();
             return Redirect("~/Account/Index");
         }
     }

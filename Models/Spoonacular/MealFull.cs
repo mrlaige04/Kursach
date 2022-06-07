@@ -12,14 +12,10 @@
         public ingredient[] extendedIngredients { get; set; }
         #endregion
 
-
-
         public string instructions { get; set; }
         public string spoonacularSourceUrl { get; set; }
 
-
-        public MenuItems menuItems { get; set; }
-        
+        public MenuItems menuItems { get; set; }        
     }
 
     public record Restaurant
@@ -28,7 +24,6 @@
         public string title { get; set; }
         public string restaurantChain { get; set; }
         public int image { get; set; }
-
     }
 
     public record ingredient
@@ -49,8 +44,4 @@
 
         }
     }
-
-
-    
-
 }

@@ -1,12 +1,8 @@
-
 using Kursach.Models.Spoonacular;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 namespace Kursach.Controllers
 {
-
-
-
     /// <summary>
     /// GetMeals from MEALDB(API)
     /// </summary>
@@ -23,24 +19,23 @@ namespace Kursach.Controllers
         /// </summary>
         /// <returns>Web Page</returns>
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             message = new HttpRequestMessage()
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri("https://api.spoonacular.com/recipes/random?apiKey=83c7e059495b468e87e5ea32c1215288")
             };
-            using (response = client.Send(message))
+            using (response = await client.SendAsync(message))
             {
                 var body = response.Content.ReadAsStringAsync().Result;
                 RandomMeal sresult = JsonSerializer.Deserialize<RandomMeal>(body);
 
                 try { 
-                    sresult.recipes.First().menuItems = WhereServing(sresult?.recipes.First().title); 
+                    sresult.recipes.First().menuItems = WhereServing(sresult?.recipes.First().title).Result; 
                 } catch { }
                 return View("Meal", sresult?.recipes?.ToList());
             }
-
         }
 
         /// <summary>
@@ -50,7 +45,7 @@ namespace Kursach.Controllers
         /// <returns></returns>
         [HttpGet("name")]
         [Route("/[controller]/MealByName")]
-        public IActionResult MealByName(string name)
+        public async Task<IActionResult> MealByName(string name)
         {
             message = new HttpRequestMessage()
             {
@@ -58,32 +53,38 @@ namespace Kursach.Controllers
                 RequestUri = new Uri($"https://api.spoonacular.com/recipes/complexSearch?query={name}&apiKey=83c7e059495b468e87e5ea32c1215288")
             };
             List<MealFull> mealsfull = new List<MealFull>();
-            using (response = client.Send(message))
+            using (response = await client.SendAsync(message))
             {
                 var res = response.Content.ReadAsStringAsync().Result;
                 SearchResult sres = JsonSerializer.Deserialize<SearchResult>(res);
                 List<string> ids = new List<string>();
-                foreach (var item in sres?.results)
+                if (sres != null && sres.results != null)
                 {
-                    ids.Add(item.id.ToString());
+                    foreach (var item in sres?.results)
+                    {
+                        ids.Add(item.id.ToString());
+                    }
                 }
-
                 mealsfull = ReturnMealsById(ids).Result;                
                 return View("Meal", mealsfull);
             }
         }
     
-        private MenuItems WhereServing(string name)
+        private async Task<MenuItems> WhereServing(string name)
         {
             message = new HttpRequestMessage()
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri($"https://api.spoonacular.com/food/menuItems/search?query={name}&apiKey=83c7e059495b468e87e5ea32c1215288")
             };
-            using (var resp = client.Send(message))
+            using (var resp = await client.SendAsync(message))
             {
                 var res = resp.Content.ReadAsStringAsync().Result;
-                var body = JsonSerializer.Deserialize<MenuItems>(res);
+                MenuItems body = new();
+                if (res != null)
+                {
+                    body = JsonSerializer.Deserialize<MenuItems>(res);
+                }
                 return body;
             }
         }
@@ -106,13 +107,21 @@ namespace Kursach.Controllers
                     using (var response = client.Send(message))
                     {
                         var res = response.Content.ReadAsStringAsync().Result;
-                        if(res != null) meals = JsonSerializer.Deserialize<List<MealFull>>(res);
+                        try
+                        {
+                            if (res != null) meals = JsonSerializer.Deserialize<List<MealFull>>(res);
+                        } catch
+                        {
+                            meals = null;
+                        }
                     }
-                    foreach (var meal in meals)
+                    if (meals != null)
                     {
-                        meal.menuItems = WhereServing(meal.title);
+                        foreach (var meal in meals)
+                        {
+                            meal.menuItems = WhereServing(meal.title).Result;
+                        }
                     }
-
                 }
                 catch { }
                 return meals;

@@ -6,10 +6,12 @@
 <!doctype html>
 <html>
     <head>
-        <title>Edit Recipe</title>
-        <link rel="icon" type="image/x-icon" href="https://cdn.iconscout.com/icon/free/png-256/edit-2653317-2202989.png">
-        <link rel="stylesheet" href="~/style/editpage.css"/>
-
+        @section head {
+            <title>Edit Recipe</title>
+            <link rel="icon" type="image/x-icon" href="https://cdn.iconscout.com/icon/free/png-256/edit-2653317-2202989.png">
+            <link rel="shortcut icon" type="image/x-icon"  href="~/images/editpage.ico"/>
+            <link rel="stylesheet" href="~/style/editpage.css"/>
+        }
     </head>
     <body>
         @if (Model != null)

@@ -1,44 +1,87 @@
 ﻿@using Kursach;
-<!doctype html>
 @{
     var login = Context.Request.Cookies["login"];
 }
+<!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="~/style/layout.css">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="~/css/bootstrap.min.css">
+        <!-- Site CSS -->
+        <link rel="stylesheet" href="~/css/style.css">
+        <!-- Responsive CSS -->
+        <link rel="stylesheet" href="~/css/responsive.css">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="~/css/custom.css">
+        <meta name="keywords" content="">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        @RenderSection("head",true)
     </head>
     <body>
-        <div class="navbar">
-            <ul>
-                <li><a href="~/">Home</a></li>
-                <li><a href="~/MealsAll/Index">Search</a></li>
-                <li><a href="~/Account/Index">Account</a></li>    
-                
-                @if(!string.IsNullOrEmpty(login))
-                {
-                    <li><a href="~/Account/Logout">Log out</a></li>
-                }
-                
-        </ul>
-        </div>
-        @RenderBody()
-        <footer>
-            <div class="leftfooter">
-                <ul>
-                    <li><a href="~/">Home</a></li>
-                    <li><a href="~/MealsAll/Index">Search</a></li>
-                    <li><a href="~/Account/Index">Account</a></li>
-                </ul>
-            </div>
-            <div class="rightfooter">
-                <ul>
-                    <li><a target="_blank" href="https://twitter.com/mrlaige"><img class="nets" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Twitter-logo.svg/2491px-Twitter-logo.svg.png" alt=""></a></li>
-                    <li><a target="_blank" href="https://www.instagram.com/mrlaige/"><img class="nets" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/2048px-Instagram_icon.png" alt=""></a></li>
-                    <li><a target="_blank" href="https://www.linkedin.com/in/illia-rudiakov-a29494226/"><img class="nets" src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt=""></a></li>
-                    <li><a target="_blank" href="https://www.facebook.com/profile.php?id=100010876713444"><img class="nets" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Facebook_logo_%28square%29.png/800px-Facebook_logo_%28square%29.png" alt=""></a></li>
-                    <li><a target="_blank" href="https://github.com/mrlaige04"><img class="nets" src="https://icons-for-free.com/download-icon-github-1320568242989935765_512.png" alt=""></a></li>
-                </ul>
+        <!-- Start header -->
+        <header class="top-navbar">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-rs-food" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
+				      <span class="navbar-toggler-icon"></span>
+				    </button>
+                    <div class="collapse navbar-collapse" id="navbars-rs-food">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item active"><a class="nav-link" href="~/">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="~/MealsAll/Index">Search</a></li>
+                            <li class="nav-item"><a class="nav-link" href="~/Account/Index">Account</a></li>
+                            @if(!string.IsNullOrEmpty(Context.Request.Cookies["login"]))
+                            {
+                                <li class="nav-item"><a class="nav-link" href="~/Account/Logout">Logout</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <!-- End header -->        
+
+        @RenderBody()        
+
+        <!-- Start Footer -->
+        <footer class="footer-area bg-f">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <h3>About Project</h3>
+                        <p>For many centuries, people have used books and papers to save recipes for culinary dishes. But with the development of technology, you have the opportunity to do many everyday tasks just on your computer. Create your own cookbook and
+                            add new and new dishes here.</p>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <ul class="list-inline f-social">
+                            <li class="list-inline-item"><a target="_blank" href="https://www.facebook.com/profile.php?id=100010876713444"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                            <li class="list-inline-item"><a target="_blank" href="https://twitter.com/mrlaige"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                            <li class="list-inline-item"><a target="_blank" href="https://twitter.com/mrlaige"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                            <li class="list-inline-item"><a target="_blank" href="https://www.instagram.com/mrlaige/"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </footer>
+        <!-- End Footer -->
+
+        <a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
+
+        <!-- ALL JS FILES -->
+        <script src="~/js/jquery-3.2.1.min.js"></script>
+        <script src="~/js/popper.min.js"></script>
+        <script src="~/js/bootstrap.min.js"></script>
+        <!-- ALL PLUGINS -->
+        <script src="~/js/jquery.superslides.min.js"></script>
+        <script src="~/js/images-loded.min.js"></script>
+        <script src="~/js/isotope.min.js"></script>
+        <script src="~/js/baguetteBox.min.js"></script>
+        <script src="~/js/form-validator.min.js"></script>
+        <script src="~/js/contact-form-script.js"></script>
+        <script src="~/js/custom.js"></script>
     </body>
 </html>
