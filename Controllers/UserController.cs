@@ -206,9 +206,19 @@ namespace Kursach.Controllers
         [Route("~/[controller]/GetEditRecipePage")]
         public IActionResult GetEditRecipePage(int id)
         {
-            var User = db.Users.Where(user => user.login == currentuser.LOGIN).First();
-            User.listrecipes = JsonSerializer.Deserialize<List<MealFull>>(User.recipes);
-            return View("~/Views/Account/EditPage.cshtml", User.listrecipes.Where(recipe=>recipe.id==id).First());
+            var log = Request.Cookies["login"];
+            if(!string.IsNullOrEmpty(log))
+            {
+                var User = db.Users.Where(user => user.login == log).First();
+                User.listrecipes = JsonSerializer.Deserialize<List<MealFull>>(User.recipes);
+                MealFull mealEdit = User.listrecipes.FirstOrDefault(meal => meal.id == id);
+                return View("~/Views/Account/EditPage.cshtml", mealEdit);
+            } else
+            {
+                Response.StatusCode = 403;
+                return Redirect("~/Account/Index");
+            }
+            
         }
 
 
@@ -222,12 +232,26 @@ namespace Kursach.Controllers
             var instructions = Request.Form["instructions"].ToString();
             var id = Request.Form["id"].ToString();
 
-            var curuser = db.Users.Where(user => user.login == currentuser.LOGIN).First();
-            var recipe = curuser.listrecipes.Where(recipe => recipe.id.ToString() == id).First();
-            recipe.image = img;
-            recipe.title = title;
-            recipe.readyInMinutes = int.Parse(readyin);
-            recipe.instructions = instructions;
+            MealFull mealFull = new MealFull() {
+                image = img,
+                title = title,
+                readyInMinutes = int.Parse(readyin),
+                instructions = instructions,
+                id = int.Parse(id)
+            };
+            if (!string.IsNullOrEmpty(Request.Cookies["login"]))
+            {
+                var login = Request.Cookies["login"];
+                var curuser = db.Users.First(user => user.login == login);
+                curuser.listrecipes = JsonSerializer.Deserialize<List<MealFull>>(curuser.recipes);
+                
+                curuser.RemoveRecipe(id, login);
+                curuser.AddRecipe(mealFull, login);
+                
+                
+                
+            }
+            
             return Redirect("~/Account/Index");
         }
     }

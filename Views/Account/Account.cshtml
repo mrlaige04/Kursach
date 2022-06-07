@@ -233,10 +233,8 @@
             }
 
             function editrecipe(id) {
-                $.ajax({
-                 type: "GET",
-                 url: `../User/GetEditRecipePage?id=${id}`,
-                 });
+                location.href = `../User/GetEditRecipePage?id=${id}`;
+                
             }
         </script>
 </div>

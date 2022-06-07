@@ -9,13 +9,16 @@
 
     </head>
     <body>
-        <form method="post" action="~/User/EditRecipe">
-            Image src: <input type="text" value="@Model.image" required name="imagesrc"/>
-            Meal title: <input type="text" value="@Model.title" required name="title"/>
-            Can be cooked: <input type="number" value="@Model.readyInMinutes" required name="readyin"/>
-            Instructions: <input type="text" value="@Model.instructions" required name="instructions"/>
-            <input type="text" style="display:none;" value="@Model.id" required name="id"/>
-            <button type="submit">Submit</button>
-        </form>
+        @if (Model != null)
+        {
+            <form method="post" action="~/User/EditRecipe">
+                Image src: <input type="text" value="@Model.image" required name="imagesrc"/>
+                Meal title: <input type="text" value="@Model.title" required name="title"/>
+                Can be cooked: <input type="number" value="@Model.readyInMinutes" required name="readyin"/>
+                Instructions: <input type="text" value="@Model.instructions" required name="instructions"/>
+                <input type="text" style="display:none;" value="@Model.id" required name="id"/>
+                <button type="submit">Submit</button>
+            </form>
+        }
     </body>
 </html>
