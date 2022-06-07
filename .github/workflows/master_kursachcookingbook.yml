@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'KursachCookingBook'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_74BD5FCDA6EF4CC88D3C740153386540 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6A628A9268F14AF6AC3863D67C221627 }}
           package: .
