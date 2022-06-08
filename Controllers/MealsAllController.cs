@@ -44,7 +44,7 @@ namespace Kursach.Controllers
         /// <param name="name"></param>
         /// <returns></returns>
         [HttpGet("name")]
-        [Route("/[controller]/MealByName/{name?}")]
+        [Route("/[controller]/MealByName")]
         public async Task<IActionResult> MealByName(string name)
         {
             message = new HttpRequestMessage()
