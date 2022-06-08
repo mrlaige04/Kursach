@@ -53,7 +53,18 @@
                                             <h3>@meal.title Id: @meal.id</h3>
                                             <details>
                                                 <summary>More info</summary>
-                                                <p>Dish types</p>
+                                                @{
+                                                    string dishtypes = "";
+                                                    if (meal.dishTypes != null)
+                                                    {
+                                                        foreach (var dtype in meal.dishTypes)
+                                                        {
+                                                            dishtypes += dtype;
+                                                            dishtypes += " ";
+                                                        }
+                                                    }
+                                                }
+                                                <p>@dishtypes</p>
                                                 <p>Can be cooked in @meal.readyInMinutes minutes</p>
                                                 <a href="@meal.sourceUrl" class="bn3637 bn36">Source</a>
                                                 <p><b>Instructions:</b> <br />@meal.instructions</p>
